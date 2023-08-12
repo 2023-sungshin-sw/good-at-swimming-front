@@ -4,7 +4,8 @@ import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:good_swimming/tab/myPage/my_page.dart';
 
 class TabPage extends StatefulWidget {
-  const TabPage({super.key});
+  const TabPage({super.key, required this.selectedTab});
+  final int selectedTab;
 
   @override
   State<TabPage> createState() => _TabPageState();
@@ -12,6 +13,11 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   int _currentIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.selectedTab; // 선택된 탭을 초기화
+  }
 
   final _pages = [
     HomePage(),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/category_page.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
+import 'package:good_swimming/tab/home/home_page.dart';
+import 'package:good_swimming/tab/tab_page.dart';
 
 class WordPage extends StatefulWidget {
   const WordPage({Key? key}) : super(key: key);
@@ -55,7 +58,11 @@ class _WordPageState extends State<WordPage> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           onPressed: () {
-            // 카테고리 버튼 동작 추가
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const TabPage(selectedTab: 1)),
+            );
           },
         ),
         title: const Text(
