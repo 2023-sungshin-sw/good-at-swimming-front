@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/word/word_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -7,7 +8,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: CreatePage(),
     );
   }
@@ -25,7 +26,7 @@ class _CreatePageState extends State<CreatePage> {
   final TextEditingController _meaningController = TextEditingController();
   final TextEditingController _exampleController = TextEditingController();
 
-  List<WordData> _wordDataList = [];
+  final List<WordData> _wordDataList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,12 @@ class _CreatePageState extends State<CreatePage> {
         backgroundColor: const Color(0xFF030C1A),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const WordPage()),
+            );
+          },
         ),
         title: const Text(
           'VOCA',

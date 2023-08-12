@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/word/create_page.dart';
 
 class WordPage extends StatefulWidget {
   const WordPage({Key? key}) : super(key: key);
@@ -112,7 +113,10 @@ class _WordPageState extends State<WordPage> {
                 icon: const Icon(Icons.add_circle,
                     color: Colors.white70, size: 50),
                 onPressed: () {
-                  // 단어추가 아이콘 버튼 동작 추가
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CreatePage()),
+                  );
                 },
               ),
             ],

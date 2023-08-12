@@ -22,26 +22,57 @@ class _TabPageState extends State<TabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      body: Stack(
+        children: [
+          Positioned.fill(child: _pages[_currentIndex]),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: const Color(0xFF030C1A),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildTabItem(0, Icons.home, 'Home'),
+                  _buildTabItem(1, Icons.category, 'Category'),
+                  _buildTabItem(2, Icons.person, 'MyPage'),
+                ],
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category),
-            label: 'Category',
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabItem(int index, IconData iconData, String label) {
+    final isSelected = _currentIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 45),
+            decoration: BoxDecoration(
+              color: isSelected ? Color(0xFF5C65BB) : Colors.transparent,
+              borderRadius: BorderRadius.circular(30), // 둥근 모서리 설정
+            ),
+            child: Icon(
+              iconData,
+              color: isSelected ? Colors.white : Colors.grey,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'MyPage',
+          Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Color(0xFF5C65BB) : Colors.grey,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
           ),
         ],
       ),
