@@ -33,7 +33,7 @@ class _TabPageState extends State<TabPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _buildTabItem(0, Icons.home, 'Home'),
-                  _buildTabItem(1, Icons.category, 'Category'),
+                  _buildTabItem(1, Icons.menu, 'Category'),
                   _buildTabItem(2, Icons.person, 'MyPage'),
                 ],
               ),
