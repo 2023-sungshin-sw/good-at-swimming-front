@@ -59,33 +59,33 @@ class _CreatePageState extends State<CreatePage> {
               labelText: 'ENGLISH',
               hintText: '영단어를 입력해주세요',
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             _buildInputField(
               controller: _meaningController,
               labelText: 'KOREAN',
               hintText: '뜻을 입력해주세요',
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             _buildInputField(
               controller: _exampleController,
               labelText: 'EXAMPLE',
               hintText: '예문을 입력해주세요',
             ),
-            SizedBox(height: 70),
+            const SizedBox(height: 70),
             ElevatedButton.icon(
               onPressed: _addWord,
-              icon: Icon(
+              icon: const Icon(
                 Icons.check_circle_outline,
                 color: Colors.white,
                 size: 60.0, //
               ),
-              label: SizedBox.shrink(),
+              label: const SizedBox.shrink(),
               style: ElevatedButton.styleFrom(
                 primary: Colors.transparent,
                 shadowColor: Colors.transparent,
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Expanded(
               child: ListView.builder(
                 itemCount: _wordDataList.length,
@@ -93,7 +93,7 @@ class _CreatePageState extends State<CreatePage> {
                   return ListTile(
                     title: Text(_wordDataList[index].word),
                     subtitle: Text(_wordDataList[index].meaning),
-                    trailing: Icon(Icons.edit),
+                    trailing: const Icon(Icons.edit),
                   );
                 },
               ),
@@ -121,12 +121,12 @@ class _CreatePageState extends State<CreatePage> {
       ),
       child: TextFormField(
         controller: controller,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
           labelText: labelText,
-          labelStyle: TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.white),
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: const TextStyle(color: Colors.grey),
           border: InputBorder.none,
         ),
       ),
@@ -156,7 +156,7 @@ class _CreatePageState extends State<CreatePage> {
 
       _showToast('저장에 성공했습니다');
 
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.pop(context);
       });
     });
@@ -169,15 +169,13 @@ class _CreatePageState extends State<CreatePage> {
           width: 311,
           height: 13,
           decoration: BoxDecoration(
-            color:
-                Color.fromARGB(255, 51, 50, 50), // 토스트 배경색을 주변 버튼 색상과 일치하도록 설정
-            borderRadius: BorderRadius.circular(
-                8.0), // 토스트의 모서리를 둥글게 설정하려고 했는데 적용 안됨/ 아마 컨테이너에 적용해야할듯함
+            color: const Color.fromARGB(255, 51, 50, 50),
+            borderRadius: BorderRadius.circular(8.0),
           ),
           child: Center(
             child: Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
                 fontSize: 10,
@@ -188,7 +186,8 @@ class _CreatePageState extends State<CreatePage> {
         ),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.zero), // 토스트의 테두리 없음
+          borderRadius: BorderRadius.circular(20.0),
+        ),
       ),
     );
   }
