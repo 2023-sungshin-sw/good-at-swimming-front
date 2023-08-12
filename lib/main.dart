@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
 import 'package:good_swimming/logIn/signUp_page.dart';
+import 'package:good_swimming/tab/category/word/result_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: CreatePage(),
+      home: ResultPage(),
     );
   }
 }
