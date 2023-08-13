@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:good_swimming/tab/category/word/word_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,7 +53,12 @@ class _TestPageState extends State<TestPage> {
         backgroundColor: const Color(0xFF030C1A),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const WordPage()),
+            );
+          },
         ),
         title: const Text('VOCA',
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),

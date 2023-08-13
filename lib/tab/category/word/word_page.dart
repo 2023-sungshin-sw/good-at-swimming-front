@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/category_page.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
+import 'package:good_swimming/tab/category/word/test_page.dart';
 import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 
@@ -112,7 +113,10 @@ class _WordPageState extends State<WordPage> {
                 icon: const Icon(Icons.edit_document,
                     color: Colors.white70, size: 50),
                 onPressed: () {
-                  // 단어시험 아이콘 버튼 동작 추가
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const TestPage()),
+                  );
                 },
               ),
               const SizedBox(width: 60),
