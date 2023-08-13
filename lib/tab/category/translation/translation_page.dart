@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/tab_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class TranslatePage extends StatefulWidget {
   @override
@@ -19,9 +21,44 @@ class _TranslatePageState extends State<TranslatePage> {
     });
   }
 
-  void translateText() {
-    // 여기에 번역 로직 추가
-    // inputText를 번역하여 translatedText에 저장
+  void translateText() async {
+    const apiKey = '0xCbUHelsHfXKY9aTDHN';
+    // API 요청 및 응답 처리
+    if (apiKey.isNotEmpty) {
+      final url = Uri.parse("https://openapi.naver.com/v1/papago/n2mt");
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Naver-Client-Id': apiKey,
+          'X-Naver-Client-Secret': 'jvv3y0TnEf',
+        },
+        body: {
+          'source': isEnglishToKorean ? 'en' : 'ko',
+          'target': isEnglishToKorean ? 'ko' : 'en',
+          'text': inputText,
+        },
+      );
+
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final translatedData = json.decode(response.body);
+        setState(() {
+          translatedText =
+              translatedData['message']['result']['translatedText'];
+        });
+      } else {
+        setState(() {
+          translatedText = 'Error: Unable to translate';
+        });
+      }
+    } else {
+      setState(() {
+        translatedText = 'Error: API key not provided';
+      });
+    }
   }
 
   @override
