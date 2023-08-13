@@ -29,8 +29,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const TranslatePage()),
+                      MaterialPageRoute(builder: (context) => TranslatePage()),
                     );
                   },
                 ),

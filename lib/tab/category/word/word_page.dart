@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:good_swimming/tab/category/category_page.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
 import 'package:good_swimming/tab/category/word/test_page.dart';
-import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class WordPage extends StatefulWidget {
   const WordPage({Key? key}) : super(key: key);

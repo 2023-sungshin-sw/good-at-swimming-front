@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/word/word_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
