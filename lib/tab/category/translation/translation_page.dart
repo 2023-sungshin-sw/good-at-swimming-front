@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -90,7 +91,14 @@ class _TranslatePageState extends State<TranslatePage> {
                 width: 330,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF5C65BB),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF5C65BB),
+                      Color.fromARGB(255, 153, 156, 197)
+                    ], // 그라디언트 색상 설정
+                    begin: Alignment.topLeft, // 시작점 설정
+                    end: Alignment.bottomRight, // 끝점 설정
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.all(16),
@@ -129,7 +137,14 @@ class _TranslatePageState extends State<TranslatePage> {
                 height: 200,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF5C65BB),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF5C65BB),
+                      Color.fromARGB(255, 153, 156, 197)
+                    ], // 그라디언트 색상 설정
+                    begin: Alignment.topLeft, // 시작점 설정
+                    end: Alignment.bottomRight, // 끝점 설정
+                  ),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -201,7 +216,7 @@ class _TranslatePageState extends State<TranslatePage> {
                     children: [
                       const Text(
                         'English',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(width: 10),
                       Container(
@@ -221,7 +236,7 @@ class _TranslatePageState extends State<TranslatePage> {
                       const SizedBox(width: 10),
                       const Text(
                         'Korean',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ],
                   )
@@ -231,7 +246,7 @@ class _TranslatePageState extends State<TranslatePage> {
                     children: [
                       const Text(
                         'Korean',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(width: 10),
                       Container(
@@ -251,7 +266,7 @@ class _TranslatePageState extends State<TranslatePage> {
                       const SizedBox(width: 10),
                       const Text(
                         'English',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ],
                   ),
@@ -268,7 +283,12 @@ class _TranslatePageState extends State<TranslatePage> {
               child: IconButton(
                 icon: const Icon(Icons.camera_alt),
                 color: Colors.white,
-                onPressed: toggleTranslationMode,
+                onPressed: () {
+                  /*Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ScanPage()),
+                  );*/
+                },
               ),
             ),
           ],
