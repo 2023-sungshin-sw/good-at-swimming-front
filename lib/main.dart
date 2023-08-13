@@ -6,6 +6,7 @@ import 'package:good_swimming/logIn/signUp_page.dart';
 import 'package:good_swimming/tab/category/word/result_page.dart';
 import 'package:good_swimming/tab/category/word/test_page.dart';
 import 'package:good_swimming/tab/category/word/word_page.dart';
+import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 
 void main() {

@@ -33,9 +33,10 @@ class _WordPageState extends State<WordPage> {
   List<List<WordCard>> _groupWords() {
     List<List<WordCard>> grouped = [];
     for (int i = 0; i < words.length; i += cardsPerPage) {
-      grouped.add(words.sublist(i, i + cardsPerPage));
+      final sublist = words.sublist(i, i + cardsPerPage);
+      grouped.add(sublist);
+      print('Added sublist: $sublist');
     }
-    //print('Grouped words length: ${grouped.length}');
     return grouped;
   }
 
@@ -80,27 +81,25 @@ class _WordPageState extends State<WordPage> {
               itemBuilder: (context, pageIndex) {
                 final pageWords = groupedWords[pageIndex];
 
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var word in pageWords)
-                        Column(
-                          children: [
-                            WordCardItem(wordCard: word),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
+                return ListView(
+                  children: [
+                    for (var word in pageWords)
+                      Column(
+                        children: [
+                          WordCardItem(wordCard: word),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    const SizedBox(height: 16),
+                  ],
                 );
               },
 // 단어 리스트는 잘 나눠지는데 페이지를 넘겼을때 상태가 변하지 않는 문제 추후 해결 예정
               onPageChanged: (int page) {
                 setState(() {
                   currentPage = page;
-                  /*print('Current Page: $currentPage'); 
-                  페이지가 잘 넘어가는지 확인하는 부분 -> 디버그 콘솔에 출력 안됨 */
+                  print('Current Page: $currentPage');
+                  //페이지가 잘 넘어가는지 확인하는 부분 -> 디버그 콘솔에 출력 안됨
                 });
               },
             ),
@@ -142,7 +141,7 @@ class _WordPageState extends State<WordPage> {
                   onTap: () {
                     setState(() {
                       currentPage = i;
-                      print('Tapped Page: $currentPage');
+                      //print('Tapped Page: $currentPage');
                     });
                   },
                   child: Container(
@@ -187,6 +186,10 @@ class WordCard {
   final String? example;
 
   WordCard(this.word, this.meaning, this.example);
+  @override
+  String toString() {
+    return 'WordCard{word: $word, meaning: $meaning, example: $example}';
+  }
 }
 
 class WordCardItem extends StatefulWidget {

@@ -135,9 +135,9 @@ class _TestPageState extends State<TestPage> {
                 child: Container(
                   width: 50,
                   height: 50,
-                  decoration:
-                      BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                  child: Center(
+                  decoration: const BoxDecoration(
+                      color: Colors.red, shape: BoxShape.circle),
+                  child: const Center(
                     child: Icon(
                       Icons.close,
                       color: Color.fromARGB(188, 204, 199, 239),
