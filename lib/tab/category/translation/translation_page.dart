@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class TranslatePage extends StatefulWidget {
+  const TranslatePage({super.key});
+
   @override
   _TranslatePageState createState() => _TranslatePageState();
 }
