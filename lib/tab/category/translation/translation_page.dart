@@ -11,13 +11,13 @@ class TranslatePage extends StatefulWidget {
 class _TranslatePageState extends State<TranslatePage> {
   bool isEnglishToKorean = true; // English to Korean 번역 모드인지 여부
   String inputText = ''; // 입력된 텍스트
-  String translatedText = ''; // 번역된 텍스트
+  String translated_text = ''; // 번역된 텍스트
 
   void toggleTranslationMode() {
     setState(() {
       isEnglishToKorean = !isEnglishToKorean;
       inputText = ''; // 번역 모드 전환 시 입력된 텍스트 초기화
-      translatedText = ''; // 번역 모드 전환 시 번역된 텍스트 초기화
+      translated_text = ''; // 번역 모드 전환 시 번역된 텍스트 초기화
     });
   }
 
@@ -40,23 +40,20 @@ class _TranslatePageState extends State<TranslatePage> {
         },
       );
 
-      print('Response Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         final translatedData = json.decode(response.body);
         setState(() {
-          translatedText =
+          translated_text =
               translatedData['message']['result']['translatedText'];
         });
       } else {
         setState(() {
-          translatedText = 'Error: Unable to translate';
+          translated_text = 'Error: Unable to translate';
         });
       }
     } else {
       setState(() {
-        translatedText = 'Error: API key not provided';
+        translated_text = 'Error: API key not provided';
       });
     }
   }
@@ -177,7 +174,7 @@ class _TranslatePageState extends State<TranslatePage> {
                       style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.left),
                   Text(
-                    translatedText,
+                    translated_text,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ],
