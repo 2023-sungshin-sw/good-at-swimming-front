@@ -66,13 +66,13 @@ class _WordPageState extends State<WordPage> {
       }
       startIndex = endIndex;
     }
-    for (var group in grouped) {
+    /*for (var group in grouped) {
       print('Group:');
       for (var word in group) {
         print(
             '${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
       }
-    }
+    }*/
 
     return grouped;
   }
@@ -80,23 +80,6 @@ class _WordPageState extends State<WordPage> {
   @override
   Widget build(BuildContext context) {
     List<List<WordCard>> groupedWords = _groupWords();
-    // 첫 번째 그룹의 요소들 확인
-    /*for (var word in groupedWords[0]) {
-      print(
-          'First Group: ${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
-    }
-
-    // 두 번째 그룹의 요소들 확인
-    for (var word in groupedWords[1]) {
-      print(
-          'Second Group: ${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
-    }
-    // 세번째 그룹의 요소들 확인
-    for (var word in groupedWords[2]) {
-      print(
-          'Third Group: ${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
-    }*/
-
     return Scaffold(
       backgroundColor: const Color(0xFF030C1A),
       appBar: AppBar(
@@ -130,7 +113,7 @@ class _WordPageState extends State<WordPage> {
                 print('currentPage: $currentPage'); // 이 부분을 if문 밖으로 옮겼습니다
               },
               children: List<Widget>.generate(groupedWords.length, (pageIndex) {
-                final pageWords = groupedWords[pageIndex];
+                final pageWords = groupedWords[currentPage];
 
                 return ListView(
                   children: [
