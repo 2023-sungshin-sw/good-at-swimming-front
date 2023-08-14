@@ -63,7 +63,11 @@ class _TestPageState extends State<TestPage> {
           },
         ),
         title: const Text('VOCA',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.5,
+                fontFamily: 'Player')),
         centerTitle: true,
       ),
       backgroundColor: const Color(0xFF030C1A),

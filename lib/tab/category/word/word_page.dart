@@ -96,7 +96,11 @@ class _WordPageState extends State<WordPage> {
         ),
         title: const Text(
           'VOCA',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.5,
+              fontFamily: 'Player'),
         ),
       ),
       body: Column(

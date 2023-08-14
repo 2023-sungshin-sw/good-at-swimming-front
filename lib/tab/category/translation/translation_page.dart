@@ -79,7 +79,11 @@ class _TranslatePageState extends State<TranslatePage> {
         ),
         title: const Text(
           'TRANSLATE',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.5,
+              fontFamily: 'Player'),
         ),
       ),
       body: Center(

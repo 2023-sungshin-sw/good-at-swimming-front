@@ -27,11 +27,10 @@ class _CategoryPageState extends State<CategoryPage> {
                   Icons.translate,
                   'TRANSLATE',
                   () {
-                    /*
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => TranslatePage()),
-                    );*/
+                    );
                   },
                 ),
                 const SizedBox(width: 20),
