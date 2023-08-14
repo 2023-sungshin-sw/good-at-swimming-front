@@ -46,7 +46,11 @@ class _CreatePageState extends State<CreatePage> {
         ),
         title: const Text(
           'VOCA',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.5,
+              fontFamily: 'Player'),
         ),
       ),
       backgroundColor: const Color(0xFF030C1A),

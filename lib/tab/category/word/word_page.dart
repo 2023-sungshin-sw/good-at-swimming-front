@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
 import 'package:good_swimming/tab/category/word/test_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
-//import 'package:http/http.dart' as http;
-//import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class WordPage extends StatefulWidget {
   const WordPage({Key? key}) : super(key: key);
@@ -13,46 +13,73 @@ class WordPage extends StatefulWidget {
 }
 
 class _WordPageState extends State<WordPage> {
-  final List<WordCard> words = [
-    WordCard('Flutter', '플러터', 'Flutter is a UI toolkit.'),
-    WordCard('Dart', '다트', 'Dart is a programming language.'), //예문이 있는 예시
-    WordCard('Professor', '교수님', null), //예문이 없는 예시
-    WordCard('win', '이기다', null),
-    WordCard('test', '시험', null),
-    WordCard('Student', '학생', null),
-    WordCard('Dart', '다트', 'Dart is a programming language.'), //예문이 있는 예시
-    WordCard('Professor', '교수님', null), //예문이 없는 예시
-    WordCard('win', '이기다', null),
-    WordCard('test', '시험', null),
-    // 나중에 단어 데이터로 받아오는 건 처리 예정
-  ];
-
+  List<WordCard> words = [];
   final int cardsPerPage = 5;
   int currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchWords(); // 위젯이 생성될 때 단어를 가져오는 함수 호출
+  }
+
+  Future<void> fetchWords() async {
+    final response = await http
+        .get(Uri.parse('http://www.good-at-swimming-back.store/words?id=1'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
+      print(data);
+      List<WordCard> fetchedWords = [];
+      for (var item in data) {
+        fetchedWords.add(
+          WordCard(
+            item['word'],
+            item['meaning'],
+            item['example_en'],
+            item['example_kr'],
+          ),
+        );
+      }
+
+      setState(() {
+        words = fetchedWords;
+      });
+    } else {
+      // 오류 처리
+      print('단어 가져오기 실패');
+    }
+  }
 
   List<List<WordCard>> _groupWords() {
     List<List<WordCard>> grouped = [];
-    for (int i = 0; i < words.length; i += cardsPerPage) {
-      final sublist = words.sublist(i, i + cardsPerPage);
-      grouped.add(sublist);
-      print('Added sublist: $sublist');
+    int startIndex = 0;
+
+    while (startIndex < words.length) {
+      final endIndex = startIndex + cardsPerPage;
+      final sublist =
+          words.sublist(startIndex, endIndex.clamp(0, words.length));
+      if (sublist.isNotEmpty) {
+        // 빈 리스트인 경우 그룹 추가를 방지
+        grouped.add(sublist);
+      }
+      startIndex = endIndex;
     }
+    /*for (var group in grouped) {
+      print('Group:');
+      for (var word in group) {
+        print(
+            '${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
+      }
+    }*/
+
     return grouped;
   }
 
   @override
   Widget build(BuildContext context) {
     List<List<WordCard>> groupedWords = _groupWords();
-    // 첫 번째 그룹의 요소들 확인
-    /*for (var word in groupedWords[0]) {
-      print('First Group: ${word.word}, ${word.meaning}, ${word.example}');
-    }
-
-    // 두 번째 그룹의 요소들 확인
-    for (var word in groupedWords[1]) {
-      print('Second Group: ${word.word}, ${word.meaning}, ${word.example}');
-    } */
-
     return Scaffold(
       backgroundColor: const Color(0xFF030C1A),
       appBar: AppBar(
@@ -69,17 +96,28 @@ class _WordPageState extends State<WordPage> {
         ),
         title: const Text(
           'VOCA',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.5,
+              fontFamily: 'Player'),
         ),
       ),
       body: Column(
         children: [
           Expanded(
-            child: PageView.builder(
-              itemCount: groupedWords.length,
-              physics: const NeverScrollableScrollPhysics(), // 스크롤 비활성화
-              itemBuilder: (context, pageIndex) {
-                final pageWords = groupedWords[pageIndex];
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (int pageIndex) {
+                if (groupedWords.isNotEmpty) {
+                  setState(() {
+                    currentPage = pageIndex;
+                  });
+                }
+                print('currentPage: $currentPage'); // 이 부분을 if문 밖으로 옮겼습니다
+              },
+              children: List<Widget>.generate(groupedWords.length, (pageIndex) {
+                final pageWords = groupedWords[currentPage];
 
                 return ListView(
                   children: [
@@ -93,15 +131,7 @@ class _WordPageState extends State<WordPage> {
                     const SizedBox(height: 16),
                   ],
                 );
-              },
-// 단어 리스트는 잘 나눠지는데 페이지를 넘겼을때 상태가 변하지 않는 문제 추후 해결 예정
-              onPageChanged: (int page) {
-                setState(() {
-                  currentPage = page;
-                  print('Current Page: $currentPage');
-                  //페이지가 잘 넘어가는지 확인하는 부분 -> 디버그 콘솔에 출력 안됨
-                });
-              },
+              }),
             ),
           ),
           const SizedBox(height: 16),
@@ -136,41 +166,42 @@ class _WordPageState extends State<WordPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               for (int i = 0; i < groupedWords.length; i++)
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    setState(() {
-                      currentPage = i;
-                      //print('Tapped Page: $currentPage');
-                    });
-                  },
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: i == currentPage
-                          ? const Color(0xFFBCC7EF)
-                          : Colors.transparent,
-                      border: Border.all(
-                        color: const Color(0xFF5C65BB),
-                        width: 2,
+                if (i < groupedWords.length)
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      setState(() {
+                        currentPage = i;
+                        print('Tapped Page: $currentPage');
+                      });
+                    },
+                    child: Container(
+                      width: 30,
+                      height: 30,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: i == currentPage
+                            ? const Color(0xFFBCC7EF)
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: const Color(0xFF5C65BB),
+                          width: 2,
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        (i + 1).toString(),
-                        style: TextStyle(
-                          color: i == currentPage
-                              ? const Color(0xFF5C65BB)
-                              : const Color(0xFF5C65BB),
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          (i + 1).toString(),
+                          style: TextStyle(
+                            color: i == currentPage
+                                ? const Color(0xFF5C65BB)
+                                : const Color(0xFF5C65BB),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
             ],
           ),
           const SizedBox(height: 16),
@@ -183,12 +214,13 @@ class _WordPageState extends State<WordPage> {
 class WordCard {
   final String word;
   final String meaning;
-  final String? example;
+  final String? example_en;
+  final String? example_kr;
 
-  WordCard(this.word, this.meaning, this.example);
+  WordCard(this.word, this.meaning, this.example_en, this.example_kr);
   @override
   String toString() {
-    return 'WordCard{word: $word, meaning: $meaning, example: $example}';
+    return 'WordCard{word: $word, meaning: $meaning, example_en: $example_en, example_kr: $example_kr}';
   }
 }
 
@@ -233,10 +265,18 @@ class _WordCardItemState extends State<WordCardItem> {
               },
             ),
           ),
-          if (_isExpanded && widget.wordCard.example != null)
+          if (_isExpanded) // 수정된 부분
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(widget.wordCard.example!),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.wordCard.example_en != null)
+                    Text(widget.wordCard.example_en!),
+                  if (widget.wordCard.example_kr != null)
+                    Text(widget.wordCard.example_kr!),
+                ],
+              ),
             ),
         ],
       ),
