@@ -16,7 +16,7 @@ class _WordPageState extends State<WordPage> {
   List<WordCard> words = [];
   final int cardsPerPage = 5;
   int currentPage = 0;
-  //final PageController _pageController = PageController();
+  final PageController _pageController = PageController(initialPage: 0);
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _WordPageState extends State<WordPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.bodyBytes));
-
+      print(data);
       List<WordCard> fetchedWords = [];
       for (var item in data) {
         fetchedWords.add(
@@ -65,6 +65,13 @@ class _WordPageState extends State<WordPage> {
         grouped.add(sublist);
       }
       startIndex = endIndex;
+    }
+    for (var group in grouped) {
+      print('Group:');
+      for (var word in group) {
+        print(
+            '${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
+      }
     }
 
     return grouped;
@@ -112,40 +119,32 @@ class _WordPageState extends State<WordPage> {
       body: Column(
         children: [
           Expanded(
-            child: PageView.builder(
-              //controller: _pageController,
-              itemCount: groupedWords.length,
-              //physics: const NeverScrollableScrollPhysics(),
+            child: PageView(
+              controller: _pageController,
               onPageChanged: (int pageIndex) {
                 if (groupedWords.isNotEmpty) {
                   setState(() {
                     currentPage = pageIndex;
-                    //_pageController.jumpToPage(pageIndex);
                   });
-                  print('currentPage: $currentPage');
                 }
+                print('currentPage: $currentPage'); // 이 부분을 if문 밖으로 옮겼습니다
               },
+              children: List<Widget>.generate(groupedWords.length, (pageIndex) {
+                final pageWords = groupedWords[pageIndex];
 
-              itemBuilder: (context, pageIndex) {
-                if (pageIndex < groupedWords.length) {
-                  final pageWords = groupedWords[pageIndex];
-
-                  return ListView(
-                    children: [
-                      for (var word in pageWords)
-                        Column(
-                          children: [
-                            WordCardItem(wordCard: word),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-                } else {
-                  return SizedBox.shrink(); // 빈 위젯 반환
-                }
-              },
+                return ListView(
+                  children: [
+                    for (var word in pageWords)
+                      Column(
+                        children: [
+                          WordCardItem(wordCard: word),
+                          const SizedBox(height: 16),
+                        ],
+                      ),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              }),
             ),
           ),
           const SizedBox(height: 16),
