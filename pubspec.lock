@@ -90,6 +90,11 @@ packages:
     source: hosted
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    version: "1.17.1"
+=======
+>>>>>>> origin/main
     version: "1.17.2"
   cross_file:
     dependency: transitive
@@ -99,12 +104,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+4"
+<<<<<<< HEAD
 =======
     version: "1.17.1"
 >>>>>>> 64b0a7d (Design: 단어 결과 페이지)
 =======
     version: "1.17.1"
 >>>>>>> main
+=======
+>>>>>>> origin/main
+>>>>>>> origin/main
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -328,6 +337,7 @@ packages:
 sdks:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   dart: ">=3.1.0-185.0.dev <4.0.0"
   flutter: ">=3.3.0"
 =======
@@ -336,3 +346,10 @@ sdks:
 =======
   dart: ">=3.0.6-262.2.beta <4.0.0"
 >>>>>>> main
+=======
+  dart: ">=3.0.6-262.2.beta <4.0.0"
+=======
+  dart: ">=3.1.0-185.0.dev <4.0.0"
+  flutter: ">=3.3.0"
+>>>>>>> origin/main
+>>>>>>> origin/main
