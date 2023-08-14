@@ -33,7 +33,7 @@ class _WordPageState extends State<WordPage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(utf8.decode(response.bodyBytes));
-      //print(data);
+      print(data);
       List<WordCard> fetchedWords = [];
       for (var item in data) {
         fetchedWords.add(
