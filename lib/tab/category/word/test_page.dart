@@ -5,15 +5,11 @@ import 'package:good_swimming/tab/category/word/word_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(MyApp());
-}
-
 class Word {
-  final String english;
-  final String Korean;
+  final String word;
+  final String meaning;
 
-  Word({required this.english, required this.Korean});
+  Word(this.word, this.meaning);
 }
 
 class MyApp extends StatelessWidget {
@@ -36,16 +32,34 @@ class TestPage extends StatefulWidget {
 
 class _TestPageState extends State<TestPage> {
   final CarouselController carouselController = CarouselController();
-  List<Word> words = [
-    Word(english: 'Professor', Korean: '교수'),
-    Word(english: 'Student', Korean: '학생'),
-    Word(english: 'Time', Korean: '시간'),
-  ];
+  List<Word> words = [];
   int current = 0;
 
   @override
   void initState() {
     super.initState();
+    fetchWords();
+  }
+
+  Future<void> fetchWords() async {
+    final response = await http.get(
+        Uri.parse('http://www.good-at-swimming-back.store/words/exam?id=1'));
+    if (response.statusCode == 200) {
+      final data = jsonDecode(utf8.decode(response.bodyBytes));
+      print(data);
+      List<Word> fetchedWords = [];
+      for (var item in data) {
+        fetchedWords.add(
+          Word(
+            item['word'],
+            item['meaning'],
+          ),
+        );
+      }
+      setState(() {
+        words = fetchedWords;
+      });
+    }
   }
 
   @override
@@ -88,7 +102,7 @@ class _TestPageState extends State<TestPage> {
                           color: Color.fromARGB(188, 204, 199, 239)),
                       child: Center(
                         child: Text(
-                          word.english,
+                          word.word,
                           style: const TextStyle(
                               fontSize: 40, fontWeight: FontWeight.bold),
                         ),
@@ -101,7 +115,7 @@ class _TestPageState extends State<TestPage> {
                           color: Color.fromARGB(188, 204, 199, 239)),
                       child: Center(
                         child: Text(
-                          word.Korean,
+                          word.meaning,
                           style: const TextStyle(
                               fontSize: 40, fontWeight: FontWeight.bold),
                         ),
@@ -163,10 +177,10 @@ class _TestPageState extends State<TestPage> {
                 child: Container(
                   width: 50,
                   height: 50,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 92, 101, 187),
                       shape: BoxShape.circle),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.check,
                       color: Color.fromARGB(188, 204, 199, 239),

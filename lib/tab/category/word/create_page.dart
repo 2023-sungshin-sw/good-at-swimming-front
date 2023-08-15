@@ -27,6 +27,7 @@ class _CreatePageState extends State<CreatePage> {
   final TextEditingController _wordController = TextEditingController();
   final TextEditingController _meaningController = TextEditingController();
   final TextEditingController _exampleController = TextEditingController();
+  final TextEditingController _exampleKrController = TextEditingController();
 
   final List<WordData> _wordDataList = [];
 
@@ -59,25 +60,31 @@ class _CreatePageState extends State<CreatePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             _buildInputField(
               controller: _wordController,
               labelText: 'ENGLISH',
               hintText: '영단어를 입력해주세요',
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             _buildInputField(
               controller: _meaningController,
               labelText: 'KOREAN',
               hintText: '뜻을 입력해주세요',
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             _buildInputField(
               controller: _exampleController,
               labelText: 'EXAMPLE',
               hintText: '예문을 입력해주세요',
             ),
-            const SizedBox(height: 70),
+            const SizedBox(height: 20),
+            _buildInputField(
+              controller: _exampleKrController,
+              labelText: 'EXAMPLE_KR',
+              hintText: '예문의 뜻을 입력해주세요',
+            ),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _addWord,
               icon: const Icon(
@@ -116,7 +123,7 @@ class _CreatePageState extends State<CreatePage> {
     required String hintText,
   }) {
     return Container(
-      height: 130,
+      height: 120,
       decoration: BoxDecoration(
         color: const Color(0xFF121F33),
         borderRadius: BorderRadius.circular(24),
@@ -152,6 +159,7 @@ class _CreatePageState extends State<CreatePage> {
       word: wordText,
       meaning: meaningText,
       example: _exampleController.text,
+      exampleKr: _exampleKrController.text,
     );
 
     setState(() {
@@ -203,10 +211,12 @@ class WordData {
   final String word;
   final String meaning;
   final String example;
+  final String exampleKr;
 
   WordData({
     required this.word,
     required this.meaning,
     required this.example,
+    required this.exampleKr,
   });
 }
