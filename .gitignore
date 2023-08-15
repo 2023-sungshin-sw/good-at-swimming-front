@@ -44,3 +44,11 @@ app.*.map.json
 /android/app/release
 lib/tab/category/word/create_page.dart
 lib/tab/category/word/create_page.dart
+
+<<<<<<< HEAD
+=======
+# Ignore pubspec.lock file
+>>>>>>> 5b0ef33dacd6fb27a344488b4564e1f87f0a2b17
+pubspec.lock
+
+main.dart

@@ -23,6 +23,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return const MaterialApp(home: WordPage());
+=======
+    return const MaterialApp(home: TabPage(selectedTab: 0));
+>>>>>>> d561da18a4ce5cde24faa9c00e30529e765f8e06
   }
 }

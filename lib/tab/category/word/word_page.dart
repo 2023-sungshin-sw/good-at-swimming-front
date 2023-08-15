@@ -15,13 +15,15 @@ class WordPage extends StatefulWidget {
 class _WordPageState extends State<WordPage> {
   List<WordCard> words = [];
   final int cardsPerPage = 5;
+
   int currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
+  List<GlobalKey<_WordCardItemState>> cardItemKeys = [];
 
   @override
   void initState() {
     super.initState();
-    fetchWords(); // 위젯이 생성될 때 단어를 가져오는 함수 호출
+    fetchWords();
   }
 
   Future<void> fetchWords() async {
@@ -45,6 +47,9 @@ class _WordPageState extends State<WordPage> {
 
       setState(() {
         words = fetchedWords;
+        for (var _ in words) {
+          cardItemKeys.add(GlobalKey<_WordCardItemState>());
+        }
       });
     } else {
       // 오류 처리
@@ -66,13 +71,6 @@ class _WordPageState extends State<WordPage> {
       }
       startIndex = endIndex;
     }
-    /*for (var group in grouped) {
-      print('Group:');
-      for (var word in group) {
-        print(
-            '${word.word}, ${word.meaning}, ${word.example_en}, ${word.example_kr}');
-      }
-    }*/
 
     return grouped;
   }
@@ -80,6 +78,7 @@ class _WordPageState extends State<WordPage> {
   @override
   Widget build(BuildContext context) {
     List<List<WordCard>> groupedWords = _groupWords();
+
     return Scaffold(
       backgroundColor: const Color(0xFF030C1A),
       appBar: AppBar(
@@ -112,9 +111,11 @@ class _WordPageState extends State<WordPage> {
                 if (groupedWords.isNotEmpty) {
                   setState(() {
                     currentPage = pageIndex;
+                    for (var key in cardItemKeys) {
+                      key.currentState?._resetExpansion();
+                    }
                   });
                 }
-                print('currentPage: $currentPage'); // 이 부분을 if문 밖으로 옮겼습니다
               },
               children: List<Widget>.generate(groupedWords.length, (pageIndex) {
                 final pageWords = groupedWords[currentPage];
@@ -124,11 +125,12 @@ class _WordPageState extends State<WordPage> {
                     for (var word in pageWords)
                       Column(
                         children: [
-                          WordCardItem(wordCard: word),
-                          const SizedBox(height: 16),
+                          WordCardItem(
+                              key: cardItemKeys[words.indexOf(word)],
+                              wordCard: word),
+                          const SizedBox(height: 20),
                         ],
                       ),
-                    const SizedBox(height: 16),
                   ],
                 );
               }),
@@ -172,7 +174,6 @@ class _WordPageState extends State<WordPage> {
                     onTap: () {
                       setState(() {
                         currentPage = i;
-                        print('Tapped Page: $currentPage');
                       });
                     },
                     child: Container(
@@ -236,6 +237,12 @@ class WordCardItem extends StatefulWidget {
 class _WordCardItemState extends State<WordCardItem> {
   bool _isExpanded = false;
 
+  void _resetExpansion() {
+    setState(() {
+      _isExpanded = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -265,7 +272,7 @@ class _WordCardItemState extends State<WordCardItem> {
               },
             ),
           ),
-          if (_isExpanded) // 수정된 부분
+          if (_isExpanded)
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
