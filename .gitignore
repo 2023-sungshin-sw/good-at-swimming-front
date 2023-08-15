@@ -48,3 +48,4 @@ lib/tab/category/word/create_page.dart
 # Ignore pubspec.lock file
 pubspec.lock
 
+main.dart
