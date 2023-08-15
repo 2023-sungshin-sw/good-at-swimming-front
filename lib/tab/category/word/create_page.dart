@@ -27,8 +27,8 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   final TextEditingController _wordController = TextEditingController();
   final TextEditingController _meaningController = TextEditingController();
-  final TextEditingController _exampleController = TextEditingController();
-  final TextEditingController _exampleKrController = TextEditingController();
+  final TextEditingController _example_enController = TextEditingController();
+  final TextEditingController _example_krController = TextEditingController();
 
   final List<WordData> _wordDataList = [];
 
@@ -75,13 +75,13 @@ class _CreatePageState extends State<CreatePage> {
             ),
             const SizedBox(height: 20),
             _buildInputField(
-              controller: _exampleController,
+              controller: _example_enController,
               labelText: 'EXAMPLE',
               hintText: '예문을 입력해주세요',
             ),
             const SizedBox(height: 20),
             _buildInputField(
-              controller: _exampleKrController,
+              controller: _example_krController,
               labelText: 'EXAMPLE_KR',
               hintText: '예문의 뜻을 입력해주세요',
             ),
@@ -147,7 +147,7 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  void _addWord() {
+  void _addWord() async {
     final wordText = _wordController.text;
     final meaningText = _meaningController.text;
 
@@ -157,24 +157,41 @@ class _CreatePageState extends State<CreatePage> {
     }
 
     final newWordData = WordData(
+      user: 1,
       word: wordText,
       meaning: meaningText,
-      example: _exampleController.text,
-      exampleKr: _exampleKrController.text,
+      example_en: _example_enController.text,
+      example_kr: _example_krController.text,
     );
 
-    setState(() {
-      _wordDataList.add(newWordData);
-      _wordController.clear();
-      _meaningController.clear();
-      _exampleController.clear();
+    try {
+      final response = await http.post(
+        Uri.parse('http://www.good-at-swimming-back.store/words/'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(newWordData.toJson()),
+      );
 
-      _showToast('저장에 성공했습니다');
+      if (response.statusCode == 200) {
+        setState(() {
+          _wordDataList.add(newWordData);
+          _wordController.clear();
+          _meaningController.clear();
+          _example_enController.clear();
+          _example_krController.clear();
 
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.pop(context);
-      });
-    });
+          _showToast('저장에 성공했습니다');
+
+          Future.delayed(const Duration(seconds: 3), () {
+            Navigator.pop(context);
+          });
+        });
+      } else {
+        _showToast('서버로 데이터 전송에 실패했습니다');
+      }
+    } catch (e) {
+      print('Error: $e');
+      _showToast('오류가 발생했습니다');
+    }
   }
 
   void _showToast(String message) {
@@ -209,15 +226,37 @@ class _CreatePageState extends State<CreatePage> {
 }
 
 class WordData {
+  final int user;
   final String word;
   final String meaning;
-  final String example;
-  final String exampleKr;
+  final String example_en;
+  final String example_kr;
 
   WordData({
+    required this.user,
     required this.word,
     required this.meaning,
-    required this.example,
-    required this.exampleKr,
+    required this.example_en,
+    required this.example_kr,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user': user,
+      'word': word,
+      'meaning': meaning,
+      'example_en': example_en,
+      'example_kr': example_kr,
+    };
+  }
+
+  factory WordData.fromJson(Map<String, dynamic> json) {
+    return WordData(
+      user: json['user'],
+      word: json['word'],
+      meaning: json['meaning'],
+      example_en: json['example_en'],
+      example_kr: json['example_kr'],
+    );
+  }
 }
