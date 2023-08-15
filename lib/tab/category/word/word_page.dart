@@ -15,7 +15,6 @@ class WordPage extends StatefulWidget {
 class _WordPageState extends State<WordPage> {
   List<WordCard> words = [];
   final int cardsPerPage = 5;
-  List<List<bool>> cardExpandedStates = []; //토글 상태 리스트 페이지별로 관리하도록 수정
 
   int currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
@@ -80,12 +79,6 @@ class _WordPageState extends State<WordPage> {
   Widget build(BuildContext context) {
     List<List<WordCard>> groupedWords = _groupWords();
 
-    /* void resetAllExpandedStates() {
-      for (var key in cardItemKeys) {
-        key.currentState?.collapse();
-      }
-    }*/
-
     return Scaffold(
       backgroundColor: const Color(0xFF030C1A),
       appBar: AppBar(
@@ -118,7 +111,9 @@ class _WordPageState extends State<WordPage> {
                 if (groupedWords.isNotEmpty) {
                   setState(() {
                     currentPage = pageIndex;
-                    //resetAllExpandedStates();
+                    for (var key in cardItemKeys) {
+                      key.currentState?._resetExpansion();
+                    }
                   });
                 }
               },
@@ -130,7 +125,9 @@ class _WordPageState extends State<WordPage> {
                     for (var word in pageWords)
                       Column(
                         children: [
-                          WordCardItem(wordCard: word),
+                          WordCardItem(
+                              key: cardItemKeys[words.indexOf(word)],
+                              wordCard: word),
                           const SizedBox(height: 20),
                         ],
                       ),
@@ -177,7 +174,6 @@ class _WordPageState extends State<WordPage> {
                     onTap: () {
                       setState(() {
                         currentPage = i;
-                        //resetAllExpandedStates();
                       });
                     },
                     child: Container(
@@ -241,11 +237,11 @@ class WordCardItem extends StatefulWidget {
 class _WordCardItemState extends State<WordCardItem> {
   bool _isExpanded = false;
 
-  /*void collapse() {
+  void _resetExpansion() {
     setState(() {
       _isExpanded = false;
     });
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
