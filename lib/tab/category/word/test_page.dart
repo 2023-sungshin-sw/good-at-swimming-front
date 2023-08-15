@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class Word {
+  final int voca_id;
   final String word;
   final String meaning;
 
-  Word(this.word, this.meaning);
+  Word(this.voca_id, this.word, this.meaning);
 }
 
 class MyApp extends StatelessWidget {
@@ -51,6 +52,7 @@ class _TestPageState extends State<TestPage> {
       for (var item in data) {
         fetchedWords.add(
           Word(
+            item['voca_id'],
             item['word'],
             item['meaning'],
           ),
@@ -59,6 +61,56 @@ class _TestPageState extends State<TestPage> {
       setState(() {
         words = fetchedWords;
       });
+    }
+  }
+
+  void onWordIncorrect() async {
+    Word currentWord = words[current];
+
+    final response = await http.post(
+      Uri.parse('http://www.good-at-swimming-back.store/words/exam/xbutton/'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        'voca': currentWord.voca_id,
+      }),
+    );
+
+    print("Response status code: ${response.statusCode}");
+    print("Response data: ${response.body}");
+
+    if (response.statusCode == 200) {
+      print("Word submitted as incorrect.");
+      carouselController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    } else {
+      print("Failed to submit word as incorrect.");
+    }
+  }
+
+  void onWordCorrect() async {
+    Word currentWord = words[current];
+
+    final response = await http.post(
+      Uri.parse('http://www.good-at-swimming-back.store/words/exam/check/'),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        'voca': currentWord.voca_id,
+      }),
+    );
+
+    print("Response status code: ${response.statusCode}");
+    print("Response data: ${response.body}");
+
+    if (response.statusCode == 200) {
+      print("Word submitted as correct.");
+      carouselController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.linear,
+      );
+    } else {
+      print("Failed to submit word as correct.");
     }
   }
 
@@ -145,9 +197,7 @@ class _TestPageState extends State<TestPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => carouselController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.linear),
+                onPressed: onWordIncorrect,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.transparent,
                   elevation: 0,
@@ -167,9 +217,7 @@ class _TestPageState extends State<TestPage> {
               ),
               const SizedBox(width: 70),
               ElevatedButton(
-                onPressed: () => carouselController.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.linear),
+                onPressed: onWordCorrect,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.transparent,
                   elevation: 0,
