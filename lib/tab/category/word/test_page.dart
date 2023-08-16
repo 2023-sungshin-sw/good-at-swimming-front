@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:good_swimming/tab/category/word/result_page.dart';
 import 'package:good_swimming/tab/category/word/word_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,17 +12,6 @@ class Word {
   final String meaning;
 
   Word(this.voca_id, this.word, this.meaning);
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TestPage(),
-    );
-  }
 }
 
 class TestPage extends StatefulWidget {
@@ -66,6 +56,7 @@ class _TestPageState extends State<TestPage> {
 
   void onWordIncorrect() async {
     Word currentWord = words[current];
+    print(currentWord.voca_id);
 
     final response = await http.post(
       Uri.parse('http://www.good-at-swimming-back.store/words/exam/xbutton/'),
@@ -80,10 +71,24 @@ class _TestPageState extends State<TestPage> {
 
     if (response.statusCode == 200) {
       print("Word submitted as incorrect.");
+
+      setState(() {
+        current++; // 현재 페이지 인덱스를 증가시킴
+      });
+
       carouselController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.linear,
       );
+
+      if (current >= words.length) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResultPage(),
+          ),
+        );
+      }
     } else {
       print("Failed to submit word as incorrect.");
     }
@@ -91,6 +96,7 @@ class _TestPageState extends State<TestPage> {
 
   void onWordCorrect() async {
     Word currentWord = words[current];
+    print(currentWord.voca_id);
 
     final response = await http.post(
       Uri.parse('http://www.good-at-swimming-back.store/words/exam/check/'),
@@ -104,13 +110,27 @@ class _TestPageState extends State<TestPage> {
     print("Response data: ${response.body}");
 
     if (response.statusCode == 200) {
-      print("Word submitted as correct.");
+      print("Word submitted as incorrect.");
+
+      setState(() {
+        current++; // 현재 페이지 인덱스를 증가시킴
+      });
+
       carouselController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.linear,
       );
+
+      if (current >= words.length) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ResultPage(),
+          ),
+        );
+      }
     } else {
-      print("Failed to submit word as correct.");
+      print("Failed to submit word as incorrect.");
     }
   }
 

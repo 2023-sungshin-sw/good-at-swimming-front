@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/word/word_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 void main() {
   runApp(MyApp());
+}
+
+class Word {
+  final int id;
+  final String word;
+  final String meaning;
+
+  Word({required this.id, required this.word, required this.meaning});
+
+  factory Word.fromJson(Map<String, dynamic> json) {
+    return Word(
+      id: json['voca_id'],
+      word: json['word'],
+      meaning: json['meaning'],
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +40,8 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  List<Map<String, String>> wrongWords = [];
+  int score = 0;
+  List<Word> wrongWords = [];
 
   @override
   void initState() {
@@ -35,23 +53,25 @@ class _ResultPageState extends State<ResultPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://www.good-at-swimming-back.store/words/exam/result?id=1'),
+          'http://www.good-at-swimming-back.store/words/exam/result?id=1',
+        ),
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
         final List<dynamic> dataList = data['data'];
 
-        List<Map<String, String>> words =
-            dataList.map<Map<String, String>>((item) {
-          return {
-            'word': item['word'],
-            'meaning': item['meaning'],
-          };
+        final fetchedScore = data['score'];
+        setState(() {
+          score = fetchedScore;
+        });
+
+        List<Word> fetchedWords = dataList.map<Word>((item) {
+          return Word.fromJson(item);
         }).toList();
 
         setState(() {
-          wrongWords = words;
+          wrongWords = fetchedWords;
         });
       } else {
         print('Failed to fetch data: ${response.statusCode}');
@@ -68,7 +88,12 @@ class _ResultPageState extends State<ResultPage> {
         backgroundColor: const Color(0xFF030C1A),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const WordPage()),
+            );
+          },
         ),
         title: const Text(
           'VOCA',
@@ -93,7 +118,7 @@ class _ResultPageState extends State<ResultPage> {
                 borderRadius: BorderRadius.circular(60),
                 color: const Color(0xFF5C65BB),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'RESULT', // 결과 타원 안의 텍스트
                   style: TextStyle(
@@ -105,7 +130,7 @@ class _ResultPageState extends State<ResultPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
               width: 321,
               height: 90,
@@ -116,7 +141,7 @@ class _ResultPageState extends State<ResultPage> {
                   BoxShadow(
                     color: Colors.black.withOpacity(0.25),
                     blurRadius: 4,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
@@ -125,8 +150,8 @@ class _ResultPageState extends State<ResultPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '0 / ${wrongWords.length}', // 점수 박스 (맞은 갯수 / 전체 문제 수)
-                      style: TextStyle(
+                      '${score} /20', // 점수 박스 (맞은 갯수 / 전체 문제 수)
+                      style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'IBM Plex Sans KR',
@@ -137,7 +162,7 @@ class _ResultPageState extends State<ResultPage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: wrongWords.length,
@@ -147,8 +172,8 @@ class _ResultPageState extends State<ResultPage> {
                       Container(
                         width: 325,
                         height: 80,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(24),
@@ -156,21 +181,20 @@ class _ResultPageState extends State<ResultPage> {
                         ),
                         child: Row(
                           children: [
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  wrongWords[index]['word'] ?? '', // 틀린 영단어
-                                  style: TextStyle(
+                                  wrongWords[index].word, // 틀린 영단어
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
                                 ),
                                 Text(
-                                  wrongWords[index]['meaning'] ??
-                                      '뜻 없음', // 영단어 뜻
-                                  style: TextStyle(
+                                  wrongWords[index].meaning,
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.white,
                                   ),
@@ -180,7 +204,7 @@ class _ResultPageState extends State<ResultPage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10), // 추가: 단어박스 사이 간격
+                      const SizedBox(height: 10), // 추가: 단어박스 사이 간격
                     ],
                   );
                 },
