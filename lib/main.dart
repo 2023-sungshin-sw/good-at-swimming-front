@@ -6,6 +6,7 @@ import 'package:good_swimming/tab/category/category_page.dart';
 import 'package:good_swimming/tab/category/speaking/chat_page.dart';
 import 'package:good_swimming/tab/category/speaking/feedback_page.dart';
 import 'package:good_swimming/tab/category/speaking/speaking_page.dart';
+import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/category/translation/translation_page.dart';
 import 'package:good_swimming/tab/category/word/create_page.dart';
 import 'package:good_swimming/logIn/signUp_page.dart';
@@ -24,6 +25,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: LoginPage());
+    return MaterialApp(home: TranslatePage());
   }
 }

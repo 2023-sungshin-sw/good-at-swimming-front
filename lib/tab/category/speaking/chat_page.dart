@@ -25,44 +25,79 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  TextEditingController _messageController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
-  stt.SpeechToText _speech = stt.SpeechToText(); // 음성 인식 객체 추가
+  final TextEditingController _messageController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final stt.SpeechToText _speech = stt.SpeechToText(); // 음성 인식 객체 추가
 
-  List<String> _messages = [];
+  int? _roomId; // 토픽의 id?
+  List<String> _questions = []; // 가져온 질문 목록
+  int _currentQuestionIndex = 0; // 현재 보여지는 질문의 인덱스
 
-  Future<void> _sendMessage(String message) async {
-    setState(() {
-      _messages.add('You: $message');
-      _messageController.clear();
-    });
+  @override
+  void initState() {
+    super.initState();
 
+    _startChat();
+  }
+
+  final List<String> _messages = [];
+
+  Future<void> _startChat() async {
+    _questions = [];
     try {
-      // Chat GPT API 호출 및 응답 처리
-      final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
-        headers: {
-          'Authorization':
-              'http://www.good-at-swimming-back.store/chat/reply/', // API 키 입력, 여기에 실제 Chat GPT API 키를 입력해야 함
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'prompt': message,
-          'max_tokens': 50, // 챗봇 응답 토큰 수 조정
-        }),
+      final response = await http.get(
+        Uri.parse(
+            'http://www.good-at-swimming-back.store/chat/start/theater/1'),
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final botReply = data['choices'][0]['text'];
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
+        _roomId = data['chat_room_id'];
+        _questions = List<String>.from(data['question']);
+        print(_questions);
+
         setState(() {
-          _messages.add('Bot: $botReply');
+          _messageController.text = 'Bot: ${_questions[0]}';
         });
       } else {
-        print('Failed to get bot response');
+        print('Failed to start chat');
       }
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  // 사용자 응답 처리
+  void _handleUserResponse(String userResponse) async {
+    // 사용자 응답을 추가
+    setState(() {
+      _messages.add('You: $userResponse');
+    });
+
+    try {
+      // 채팅 post API 호출
+      await http.post(
+        Uri.parse('http://www.good-at-swimming-back.store/chat/reply/'),
+        body: {
+          'chat_room': _roomId, // chat_room 값을 사용자마다 다르게 설정
+          'message': userResponse, // 사용자 입력 텍스트를 전달
+        },
+      );
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    if (_currentQuestionIndex < _questions.length - 1) {
+      _currentQuestionIndex++;
+      setState(() {
+        _messageController.text = 'Bot: ${_questions[_currentQuestionIndex]}';
+      });
+    } else {
+      setState(() {
+        _messageController.clear();
+        _messages
+            .add('Bot: That was the last question. Thank you for chatting!');
+      });
     }
 
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -158,16 +193,16 @@ class _ChatPageState extends State<ChatPage> {
               Expanded(
                 child: TextFormField(
                   controller: _messageController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Type a message…',
                   ),
-                  onFieldSubmitted: _sendMessage,
+                  onFieldSubmitted: _handleUserResponse,
                 ),
               ),
               IconButton(
                 icon: Icon(Icons.check),
                 onPressed: () {
-                  _sendMessage(_messageController.text);
+                  _handleUserResponse(_messageController.text);
                 },
               ),
               IconButton(

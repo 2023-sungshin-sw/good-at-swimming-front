@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ScanTranslatePage extends StatefulWidget {
-  const ScanTranslatePage({super.key});
+  const ScanTranslatePage({super.key, required this.parsedText});
+  final String parsedText;
 
   @override
   _TranslatePageState createState() => _TranslatePageState();
@@ -22,9 +23,7 @@ class WordWithMeaning {
 class _TranslatePageState extends State<ScanTranslatePage> {
   bool isEnglishToKorean = true; // English to Korean 번역 모드인지 여부
   List<String> translated_text = []; // 번역된 텍스트
-  List<String> predefinedText = [
-    "This is an example translation. We are a 'good swimmer' team that participated in the Sungshin Women's University Software Competition. We are a team of 2 members of AI major in AI convergence department and 2 members of Information Systems Engineering department. I am trying to develop an application using the knowledge I learned in my major for 3~4 years. Please show a lot of interest and love."
-  ]; //스캔해서 받아올 문장 리스트 예시
+  List<String> predefinedText = []; //스캔해서 받아올 문장 리스트 예시
   List<String> _selectedWords = []; //저장할 단어 리스트
   //List<String> _translatedWords = []; //번역된 단어 리스트
   late String selectedWord;
@@ -52,6 +51,7 @@ class _TranslatePageState extends State<ScanTranslatePage> {
   @override
   void initState() {
     super.initState();
+    predefinedText.add(widget.parsedText);
     translateText();
   }
 
