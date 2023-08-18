@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/translation/scanTranslation_page.dart';
+import 'package:good_swimming/tab/category/translation/scan_page.dart';
 //import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class TranslatePage extends StatefulWidget {
   const TranslatePage({super.key});
@@ -58,6 +62,42 @@ class _TranslatePageState extends State<TranslatePage> {
       setState(() {
         translated_text = 'Error: API key not provided';
       });
+    }
+  }
+
+  String parsedtext = '';
+
+  Future _getFromGallery() async {
+    String apiKey = 'K84619122888957';
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+
+    var bytes = await File(pickedFile.path).readAsBytes();
+    String img64 = base64Encode(bytes);
+
+    var url = 'https://api.ocr.space/parse/image';
+    var payload = {"base64Image": "data:image/jpg;base64,$img64"};
+    var header = {"apikey": apiKey};
+
+    var post = await http.post(Uri.parse(url), body: payload, headers: header);
+    var result = jsonDecode(post.body);
+
+    setState(() {
+      parsedtext = result['ParsedResults'][0]['ParsedText'];
+    });
+  }
+
+  Future<void> _selectAndNavigateToScanTranslatePage() async {
+    await _getFromGallery(); // 이미지 선택 및 추출 실행
+
+    if (parsedtext.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ScanTranslatePage(parsedText: parsedtext),
+        ),
+      );
     }
   }
 
@@ -287,12 +327,7 @@ class _TranslatePageState extends State<TranslatePage> {
               child: IconButton(
                 icon: const Icon(Icons.camera_alt),
                 color: Colors.white,
-                onPressed: () {
-                  /*Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ScanPage()),
-                  );*/
-                },
+                onPressed: _selectAndNavigateToScanTranslatePage,
               ),
             ),
           ],
