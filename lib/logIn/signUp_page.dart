@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -8,6 +11,75 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool passwordsMatch = true;
+  bool isUsernameAvailable = false;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordC_Controller = TextEditingController();
+
+  void _showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Container(
+          width: 311,
+          height: 13,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 51, 50, 50),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Center(
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Inter',
+                fontSize: 1,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+    );
+  }
+
+  Future<void> sendDataToBackend() async {
+    final String name = nameController.text;
+    final String phone = phoneController.text;
+    final String password = passwordController.text;
+
+    final Uri uri = Uri.parse('http://localhost:8000/user/');
+    final Information = informationData(
+      name: name,
+      phone: phone,
+      password: password,
+    );
+
+    try {
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(Information.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        // 요청이 성공한 경우
+        print('Data sent successfully');
+      } else {
+        // 요청이 실패한 경우
+        print('Failed to send data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Card(
                 color: const Color(0xFFD5DBEF),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // 원하는 둥근 정도 지정
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -64,60 +136,72 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
-                          // 영어이름 입력 부분
+                          controller: nameController,
                           decoration: const InputDecoration(
                             hintText: 'Enter your English name',
                           ),
                         ),
                       ),
                       const SizedBox(height: 30.0),
-                      Row(
-                        // 아이디 입력창과 중복확인 버튼
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Phone',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 20.0),
-                                Container(
+                          const Text(
+                            'Phone',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: TextFormField(
+                                    controller: phoneController,
                                     decoration: const InputDecoration(
-                                      //폰 번호 입력 부분
                                       hintText: 'Enter your phone #',
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                              width: 10), // 중복 확인 버튼과 아이디 입력창 사이 간격 조정
-                          SizedBox(
-                            width: 85,
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF5C65BB),
                               ),
-                              child: const Text(
-                                '중복확인',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 85,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isUsernameAvailable =
+                                          !isUsernameAvailable;
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xFF5C65BB),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      isUsernameAvailable
+                                          ? Icon(Icons.check,
+                                              color: Colors
+                                                  .white) // 중복확인이 확인 아이콘으로 변경
+                                          : Text(
+                                              '중복확인',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
@@ -135,7 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
-                          // 비밀번호 입력 부분
+                          controller: passwordController,
                           decoration: const InputDecoration(
                             hintText: 'Enter your Password',
                           ),
@@ -143,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       const SizedBox(height: 30.0),
                       const Text(
-                        'Confrim Password',
+                        'Confirm Password',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
@@ -155,7 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
-                          // 비밀번호 확인 입력 부분
+                          controller: passwordC_Controller,
                           decoration: const InputDecoration(
                             hintText: 'Enter your Password again',
                           ),
@@ -169,7 +253,19 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (passwordController.text ==
+                                  passwordC_Controller.text) {
+                                passwordsMatch = true;
+                                sendDataToBackend();
+                              } else {
+                                setState(() {
+                                  passwordsMatch = false;
+                                });
+                                _showToast(context,
+                                    "Passwords do not match"); // 토스트 메시지 띄우기
+                              }
+                            },
                             child: const Text(
                               "SIGN UP",
                               style: TextStyle(
@@ -186,6 +282,34 @@ class _SignUpPageState extends State<SignUpPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class informationData {
+  final String name;
+  final String phone;
+  final String password;
+
+  informationData({
+    required this.name,
+    required this.phone,
+    required this.password,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'phone': phone,
+      'password': password,
+    };
+  }
+
+  factory informationData.fromJson(Map<String, dynamic> json) {
+    return informationData(
+      name: json['name'],
+      phone: json['phone'],
+      password: json['password'],
     );
   }
 }
