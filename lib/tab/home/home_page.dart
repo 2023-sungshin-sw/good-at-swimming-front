@@ -44,21 +44,23 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 50),
+                      SizedBox(height: 30),
                       Text(
-                        'English Sentence', // 영어 표현 한문장
+                        'Tomorrow hopes we have learned something from yesterday.', // 영어 표현 한문장
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 15),
                       Text(
-                        'Korean Translation', // 한국말 해석
+                        '내일은 우리가 어제로부터 무엇인가 배웠기를 바란다.', // 한국말 해석
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
