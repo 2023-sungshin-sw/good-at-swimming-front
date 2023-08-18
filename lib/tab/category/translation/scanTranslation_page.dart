@@ -12,22 +12,40 @@ class ScanTranslatePage extends StatefulWidget {
 }
 
 class WordWithMeaning {
+  final int user;
   final String word;
   final String meaning;
-  
-  WordWithMeaning(this.word, this.meaning);
-}
 
+  WordWithMeaning(this.user, this.word, this.meaning);
+}
 
 class _TranslatePageState extends State<ScanTranslatePage> {
   bool isEnglishToKorean = true; // English to Korean 번역 모드인지 여부
-  String exampleText = 'Hello, this is a test text for translation.';
-  String translated_text = ''; // 번역된 텍스트
+  List<String> translated_text = []; // 번역된 텍스트
+  List<String> predefinedText = [
+    "This is an example translation. We are a 'good swimmer' team that participated in the Sungshin Women's University Software Competition. We are a team of 2 members of AI major in AI convergence department and 2 members of Information Systems Engineering department. I am trying to develop an application using the knowledge I learned in my major for 3~4 years. Please show a lot of interest and love."
+  ]; //스캔해서 받아올 문장 리스트 예시
+  List<String> _selectedWords = []; //저장할 단어 리스트
+  //List<String> _translatedWords = []; //번역된 단어 리스트
+  late String selectedWord;
+  late String translatedWord = ' ';
+  List<String> _translateWords = [];
+  bool _isButtonVisible = false;
+  Offset? _buttonPosition;
 
-  void toggleTranslationMode() {
+  List<String> splitSentencesIntoWords(predefinedText) {
+    List<String> words = [];
+
+    for (String sentence in predefinedText) {
+      List<String> sentenceWords = sentence.split(' '); // 공백을 기준으로 단어 나누기
+      words.addAll(sentenceWords);
+    }
+    return words;
+  }
+
+  void _handleButtonPressed() {
     setState(() {
-      isEnglishToKorean = !isEnglishToKorean;
-      translated_text = ''; // 번역 모드 전환 시 번역된 텍스트 초기화
+      _isButtonVisible = false; // 버튼을 눌렀으므로 다시 숨김
     });
   }
 
@@ -40,8 +58,7 @@ class _TranslatePageState extends State<ScanTranslatePage> {
   void translateText() async {
     const apiKey = '0xCbUHelsHfXKY9aTDHN';
     // API 요청 및 응답 처리
-    String predefinedText =
-        'Hello, this is a test text for translation.'; //스캔해서 받아올 텍스트 예시
+
     if (apiKey.isNotEmpty) {
       final url = Uri.parse("https://openapi.naver.com/v1/papago/n2mt");
       final response = await http.post(
@@ -54,25 +71,63 @@ class _TranslatePageState extends State<ScanTranslatePage> {
         body: {
           'source': isEnglishToKorean ? 'en' : 'ko',
           'target': isEnglishToKorean ? 'ko' : 'en',
-          'text': predefinedText,
+          'text': predefinedText.join('\n'),
         },
       );
 
       if (response.statusCode == 200) {
         final translatedData = json.decode(response.body);
         setState(() {
-          translated_text =
-              translatedData['message']['result']['translatedText'];
+          translated_text = translatedData['message']['result']
+                  ['translatedText']
+              .toString()
+              .split('/n');
         });
       } else {
         setState(() {
-          translated_text = 'Error: Unable to translate';
+          print('Error: Unable to translate');
         });
       }
     } else {
       setState(() {
-        translated_text = 'Error: API key not provided';
+        print('Error: API key not provided');
       });
+    }
+  }
+
+  void translateWord() async {
+    const apiKey = '0xCbUHelsHfXKY9aTDHN';
+    // API 요청 및 응답 처리
+
+    if (apiKey.isNotEmpty) {
+      final url = Uri.parse("https://openapi.naver.com/v1/papago/n2mt");
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Naver-Client-Id': apiKey,
+          'X-Naver-Client-Secret': 'jvv3y0TnEf',
+        },
+        body: {
+          'source': isEnglishToKorean ? 'en' : 'ko',
+          'target': isEnglishToKorean ? 'ko' : 'en',
+          'text': selectedWord,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final translatedData = json.decode(response.body);
+        final translatedText =
+            translatedData['message']['result']['translatedText'];
+
+        setState(() {
+          translatedWord = translatedText;
+        });
+      } else {
+        setState(() {
+          print('Error: Unable to translate');
+        });
+      }
     }
   }
 
@@ -104,10 +159,11 @@ class _TranslatePageState extends State<ScanTranslatePage> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 40),
             Container(
               width: 330,
               height: 200,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [
@@ -119,115 +175,90 @@ class _TranslatePageState extends State<ScanTranslatePage> {
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                children: [
-                  Text(isEnglishToKorean ? 'English' : 'Korean',
-                      style: const TextStyle(fontSize: 16),
-                      textAlign: TextAlign.left),
-                  Text(
-                    isEnglishToKorean
-                        ? 'Hello, this is a test text for translation.'
-                        : '안녕하세요, 번역을 위한 테스트 텍스트입니다.',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text('English',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 2,
+                      children: predefinedText.expand((sentence) {
+                        return sentence.split(' ').map((word) {
+                          return Stack(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  setState(() {
+                                    //_selectedWords = [];
+                                    _selectedWords.add(word);
+                                    int lastIndex = _selectedWords.length - 1;
+                                    //print(_selectedWords.length);
+                                    selectedWord = _selectedWords[lastIndex];
+                                    //translateWord();
+                                    _translateWords.add(translatedWord);
+                                    int lastIndexOfTranslation =
+                                        _translateWords.length - 1;
+                                    translatedWord =
+                                        _translateWords[lastIndexOfTranslation];
+                                    translateWord();
+                                    //_translateWords.add(translatedWord);
+                                    print(_translateWords);
+                                    print(selectedWord);
+                                    print(translatedWord);
+                                  });
+                                },
+                                child: Text(
+                                  word,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              if (_isButtonVisible)
+                                Positioned(
+                                  left: _buttonPosition!.dx,
+                                  top: _buttonPosition!.dy,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _handleButtonPressed();
+                                    },
+                                    child: const Text('SAVE'),
+                                  ),
+                                ),
+                            ],
+                          );
+                        }).toList();
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 40),
+            SizedBox(height: 40),
             Container(
               width: 330,
               height: 200,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: const Color(0xFF5C65BB),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                children: [
-                  Text(isEnglishToKorean ? 'Korean' : 'English',
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Text('Korean',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left),
+                    const SizedBox(height: 10),
+                    Text(
+                      translated_text.join(' '),
                       style: const TextStyle(fontSize: 16),
-                      textAlign: TextAlign.left),
-                  Text(
-                    translated_text,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 330,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(30),
-                    color: const Color(0xFF1A254F),
-                  ),
+                    ),
+                  ],
                 ),
-                if (isEnglishToKorean)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'English',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF152F8D),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.swap_horiz),
-                          color: Colors.white,
-                          iconSize: 40,
-                          onPressed: toggleTranslationMode,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Korean',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ],
-                  )
-                else
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Korean',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF152F8D),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.swap_horiz),
-                          color: Colors.white,
-                          iconSize: 40,
-                          onPressed: toggleTranslationMode,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'English',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ],
-                  ),
-              ],
+              ),
             ),
             const SizedBox(height: 40),
             Container(
