@@ -54,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final String phone = phoneController.text;
     final String password = passwordController.text;
 
-    final Uri uri = Uri.parse('http://localhost:8000/user/');
+    final Uri uri = Uri.parse('http://www.good-at-swimming-back.store/user/');
     final Information = informationData(
       name: name,
       phone: phone,
@@ -187,10 +187,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       isUsernameAvailable
-                                          ? Icon(Icons.check,
+                                          ? const Icon(Icons.check,
                                               color: Colors
                                                   .white) // 중복확인이 확인 아이콘으로 변경
-                                          : Text(
+                                          : const Text(
                                               '중복확인',
                                               style: TextStyle(
                                                 color: Colors.white,
