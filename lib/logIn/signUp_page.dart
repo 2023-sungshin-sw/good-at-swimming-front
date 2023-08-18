@@ -167,8 +167,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           alignment: Alignment.center,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF5C65BB),
-                            ),
+                                backgroundColor: Color(0xFF5C65BB),
+                                fixedSize: Size(200, 50)),
                             onPressed: () {},
                             child: const Text(
                               "SIGN UP",
