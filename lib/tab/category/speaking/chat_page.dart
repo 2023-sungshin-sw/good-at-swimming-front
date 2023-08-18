@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:good_swimming/tab/category/speaking/speaking_page.dart'; // 추가된 부분
-import 'package:speech_to_text/speech_to_text.dart' as stt; // 추가된 부분
+import 'package:good_swimming/tab/category/speaking/speaking_page.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 void main() {
   runApp(MyApp());
@@ -27,9 +27,10 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   TextEditingController _messageController = TextEditingController();
   ScrollController _scrollController = ScrollController();
-  stt.SpeechToText _speech = stt.SpeechToText(); // 음성 인식 객체 추가
+  stt.SpeechToText _speech = stt.SpeechToText();
 
   List<String> _messages = [];
+  bool _isChatStarted = false;
 
   Future<void> _sendMessage(String message) async {
     setState(() {
@@ -38,17 +39,15 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     try {
-      // Chat GPT API 호출 및 응답 처리
       final response = await http.post(
         Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
         headers: {
-          'Authorization':
-              'http://www.good-at-swimming-back.store/chat/reply/', // API 키 입력, 여기에 실제 Chat GPT API 키를 입력해야 함
+          'Authorization': 'http://www.good-at-swimming-back.store/chat/reply/',
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
           'prompt': message,
-          'max_tokens': 50, // 챗봇 응답 토큰 수 조정
+          'max_tokens': 50,
         }),
       );
 
@@ -68,7 +67,6 @@ class _ChatPageState extends State<ChatPage> {
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
-  // 마이크 버튼 클릭 시 처리
   void _startListening() async {
     bool available = await _speech.initialize();
     if (available) {
@@ -84,9 +82,15 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  // 마이크 버튼 클릭 시 중지 처리
   void _stopListening() {
     _speech.stop();
+  }
+
+  void _startChat() {
+    setState(() {
+      _isChatStarted = true;
+    });
+    _sendMessage('start chat');
   }
 
   @override
@@ -104,7 +108,7 @@ class _ChatPageState extends State<ChatPage> {
           },
         ),
         title: const Text(
-          'TOPIC', // 메뉴에서 어떤 토픽을 선택하냐에 따라서 달라짐
+          'TOPIC',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       ),
@@ -112,7 +116,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: Container(
-              color: Color(0xFF121F33), // 배경색 설정
+              color: Color(0xFF121F33),
               child: ListView.builder(
                 controller: _scrollController,
                 itemCount: _messages.length,
@@ -128,8 +132,8 @@ class _ChatPageState extends State<ChatPage> {
                         margin: EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
                           color: _messages[index].startsWith('You: ')
-                              ? Color(0xFF5C65BB) // 내가 보내는 채팅 배경색
-                              : const Color(0xFF121F33), // 챗봇의 채팅 배경색
+                              ? Color(0xFF5C65BB)
+                              : const Color(0xFF121F33),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -152,30 +156,41 @@ class _ChatPageState extends State<ChatPage> {
               IconButton(
                 icon: Icon(Icons.mic),
                 onPressed: () {
-                  // 마이크 버튼 클릭 시 처리
+                  _startListening();
                 },
               ),
               Expanded(
                 child: TextFormField(
                   controller: _messageController,
                   decoration: InputDecoration(
-                    hintText: 'Type a message…',
+                    hintText: 'Type a message...',
                   ),
                   onFieldSubmitted: _sendMessage,
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.check),
-                onPressed: () {
-                  _sendMessage(_messageController.text);
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.arrow_forward),
-                onPressed: () {
-                  // 화살표 버튼 클릭 시 처리
-                },
-              ),
+              if (_isChatStarted)
+                IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: () {
+                    if (_messageController.text.isNotEmpty) {
+                      _sendMessage(_messageController.text);
+                    }
+                  },
+                ),
+              if (_isChatStarted)
+                IconButton(
+                  icon: Icon(Icons.arrow_forward),
+                  onPressed: () {
+                    if (_messageController.text.isNotEmpty) {
+                      _sendMessage(_messageController.text);
+                    }
+                  },
+                ),
+              if (!_isChatStarted)
+                IconButton(
+                  icon: Icon(Icons.play_arrow),
+                  onPressed: _startChat,
+                ),
             ],
           ),
         ],
