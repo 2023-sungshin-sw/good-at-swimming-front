@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+//git push
 
 class ScanTranslatePage extends StatefulWidget {
   const ScanTranslatePage({super.key, required this.parsedText});
