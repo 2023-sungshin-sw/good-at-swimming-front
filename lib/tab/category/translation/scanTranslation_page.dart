@@ -9,7 +9,7 @@ class ScanTranslatePage extends StatefulWidget {
   final String parsedText;
 
   @override
-  _TranslatePageState createState() => _TranslatePageState();
+  _ScanTranslatePageState createState() => _ScanTranslatePageState();
 }
 
 class WordWithMeaning {
@@ -20,14 +20,14 @@ class WordWithMeaning {
   WordWithMeaning(this.user, this.word, this.meaning);
 }
 
-class _TranslatePageState extends State<ScanTranslatePage> {
+class _ScanTranslatePageState extends State<ScanTranslatePage> {
   bool isEnglishToKorean = true; // English to Korean 번역 모드인지 여부
   List<String> translated_text = []; // 번역된 텍스트
   List<String> predefinedText = []; //스캔해서 받아올 문장 리스트 예시
   List<String> _selectedWords = []; //저장할 단어 리스트
   //List<String> _translatedWords = []; //번역된 단어 리스트
   late String selectedWord;
-  late String translatedWord = ' ';
+  late String translatedWord;
   List<String> _translateWords = [];
   bool _isButtonVisible = false;
   Offset? _buttonPosition;
@@ -197,13 +197,13 @@ class _TranslatePageState extends State<ScanTranslatePage> {
                                     int lastIndex = _selectedWords.length - 1;
                                     //print(_selectedWords.length);
                                     selectedWord = _selectedWords[lastIndex];
-                                    //translateWord();
+                                    translateWord();
                                     _translateWords.add(translatedWord);
                                     int lastIndexOfTranslation =
-                                        _translateWords.length - 1;
-                                    translatedWord =
-                                        _translateWords[lastIndexOfTranslation];
-                                    translateWord();
+                                        _translateWords.length;
+                                    translatedWord = _translateWords[
+                                        lastIndexOfTranslation - 1];
+                                    //translateWord();
                                     //_translateWords.add(translatedWord);
                                     print(_translateWords);
                                     print(selectedWord);
