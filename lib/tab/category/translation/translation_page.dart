@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class TranslatePage extends StatefulWidget {
   const TranslatePage({super.key});
@@ -89,16 +90,31 @@ class _TranslatePageState extends State<TranslatePage> {
   }
 
   Future<void> _selectAndNavigateToScanTranslatePage() async {
-    await _getFromGallery(); // 이미지 선택 및 추출 실행
+    // await _getFromGallery(); // 이미지 선택 및 추출 실행
+    var status = await Permission.camera.request();
 
-    if (parsedtext.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ScanTranslatePage(parsedText: parsedtext),
-        ),
-      );
+    if (status.isGranted) {
+      await _getFromGallery();
+      if (parsedtext.isNotEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScanTranslatePage(parsedText: parsedtext),
+          ),
+        );
+      }
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      openAppSettings(); // 카메라 권한이 거부되었을 때 앱 설정 화면 열기
     }
+
+    // if (parsedtext.isNotEmpty) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => ScanTranslatePage(parsedText: parsedtext),
+    //     ),
+    //   );
+    // }
   }
 
   @override
