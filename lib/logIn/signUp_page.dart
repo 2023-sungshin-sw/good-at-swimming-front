@@ -60,15 +60,15 @@ class _SignUpPageState extends State<SignUpPage> {
       body: jsonEncode({'phone': phoneNumber}),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final isAvailable = data['isAvailable'] as bool;
+      final isvalid = data['is_valid'] as bool;
 
       setState(() {
-        isUsernameAvailable = isAvailable;
+        isUsernameAvailable = isvalid;
       });
 
-      if (!isAvailable) {
+      if (!isvalid) {
         _showToast(context, "이미 사용 중인 전화번호입니다.");
       } else {
         print('Failed to send data. Status code: ${response.statusCode}');
@@ -96,7 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
         body: jsonEncode(Information.toJson()),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // 요청이 성공한 경우
         print('Data sent successfully');
         _showToast(context, "회원가입이 완료되었습니다!");
