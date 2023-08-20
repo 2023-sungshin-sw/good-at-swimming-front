@@ -64,7 +64,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedFirst ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -108,7 +108,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedSecond ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -152,7 +152,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedThird ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -196,7 +196,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedFourth ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -240,7 +240,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedFifth ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -284,7 +284,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedSixth ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -328,7 +328,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedSeventh ? Color(0xFFADADB0) : Color(0xFF121F33),
@@ -372,7 +372,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             children: [
               Container(
                 height: 60,
-                width: 280,
+                width: 250,
                 decoration: BoxDecoration(
                   color:
                       _isCheckedEighth ? Color(0xFFADADB0) : Color(0xFF121F33),

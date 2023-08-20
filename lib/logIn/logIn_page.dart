@@ -89,6 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
+                          obscureText: true,
                           // 비밀번호 입력 부분
                           decoration: const InputDecoration(
                             hintText: 'Enter your Password',

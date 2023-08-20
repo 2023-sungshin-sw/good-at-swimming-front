@@ -145,7 +145,7 @@ class _TranslatePageState extends State<TranslatePage> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             if (isEnglishToKorean)
               Container(
                 width: 330,
@@ -236,7 +236,7 @@ class _TranslatePageState extends State<TranslatePage> {
                   ],
                 ),
               ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
             Container(
               width: 330,
               height: 200,
@@ -257,7 +257,7 @@ class _TranslatePageState extends State<TranslatePage> {
                 ],
               ),
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 10),
             Stack(
               alignment: Alignment.center,
               children: [
@@ -332,7 +332,7 @@ class _TranslatePageState extends State<TranslatePage> {
                   ),
               ],
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 20),
             Container(
               width: 60,
               height: 60,

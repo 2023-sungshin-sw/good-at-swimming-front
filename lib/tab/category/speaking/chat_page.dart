@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:good_swimming/tab/category/speaking/feedback_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:good_swimming/tab/category/speaking/speaking_page.dart'; // 추가된 부분
@@ -25,51 +27,98 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  TextEditingController _messageController = TextEditingController();
-  ScrollController _scrollController = ScrollController();
-  stt.SpeechToText _speech = stt.SpeechToText(); // 음성 인식 객체 추가
+  final TextEditingController _messageController = TextEditingController();
+  //final ScrollController _scrollController = ScrollController();
+  //final stt.SpeechToText _speech = stt.SpeechToText(); // 음성 인식 객체 추가
+  late int _roomId; // 토픽의 id?
+  //String chat_room = "2";
+  Map<String, String> _questions = {};
+  int _currentQuestionIndex = 0; // 현재 보여지는 질문의 인덱스
 
-  List<String> _messages = [];
+  @override
+  void initState() {
+    super.initState();
+    _startChat();
+  }
 
-  Future<void> _sendMessage(String message) async {
-    setState(() {
-      _messages.add('You: $message');
-      _messageController.clear();
-    });
+  final List<String> _messages = [];
 
+  Future<void> _startChat() async {
+    _questions = {};
     try {
-      // Chat GPT API 호출 및 응답 처리
-      final response = await http.post(
-        Uri.parse('https://api.openai.com/v1/engines/davinci/completions'),
-        headers: {
-          'Authorization':
-              'http://www.good-at-swimming-back.store/chat/reply/', // API 키 입력, 여기에 실제 Chat GPT API 키를 입력해야 함
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'prompt': message,
-          'max_tokens': 50, // 챗봇 응답 토큰 수 조정
-        }),
+      final response = await http.get(
+        Uri.parse(
+            'http://www.good-at-swimming-back.store/chat/start/theater/1'),
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final botReply = data['choices'][0]['text'];
+        final data = jsonDecode(utf8.decode(response.bodyBytes));
+        _roomId = data['chat_room_id'];
+        _questions = Map<String, String>.from(data['questions']);
+        print(_roomId);
+        print(_questions);
+
         setState(() {
-          _messages.add('Bot: $botReply');
+          if (_questions.isNotEmpty) {
+            _messages.add(
+                'Bot: ${_questions.values.elementAt(0)}'); // 봇의 첫 번째 질문을 컨테이너에 추가
+          } else {
+            _messages.add('Bot: No questions available.');
+          }
         });
       } else {
-        print('Failed to get bot response');
+        print('Failed to start chat');
       }
     } catch (e) {
       print('Error: $e');
     }
-
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
-  // 마이크 버튼 클릭 시 처리
-  void _startListening() async {
+  void _handleUserResponse() async {
+    final userResponse = _messageController.text;
+
+    setState(() {
+      _messages.add('You: $userResponse');
+    });
+
+    final newChatCom = {
+      "chat_room": _roomId.toString(),
+      "message": userResponse,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://www.good-at-swimming-back.store/chat/reply/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(newChatCom),
+      );
+
+      if (response.statusCode == 200) {
+        print('데이터를 백엔드로 성공적으로 전송했습니다');
+      } else {
+        print('데이터 전송 실패. 상태 코드: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('데이터를 백엔드로 전송하는 중 오류 발생: $e');
+    }
+    if (_currentQuestionIndex < _questions.length - 1) {
+      // If there are more questions, show the next question
+      _currentQuestionIndex++;
+      final nextQuestion = _questions.values.elementAt(_currentQuestionIndex);
+      _messages.add('Bot: $nextQuestion');
+      _messageController.text = '';
+    } else {
+      // No more questions, chat is done
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FeedbackPage()),
+      );
+    }
+  }
+
+  /*void _startListening() async {
     bool available = await _speech.initialize();
     if (available) {
       _speech.listen(
@@ -87,7 +136,7 @@ class _ChatPageState extends State<ChatPage> {
   // 마이크 버튼 클릭 시 중지 처리
   void _stopListening() {
     _speech.stop();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
           },
         ),
         title: const Text(
-          'TOPIC', // 메뉴에서 어떤 토픽을 선택하냐에 따라서 달라짐
+          'TOPIC',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
       ),
@@ -112,37 +161,21 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: Container(
-              color: Color(0xFF121F33), // 배경색 설정
+              color: Color(0xFF121F33),
               child: ListView.builder(
-                controller: _scrollController,
                 itemCount: _messages.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Align(
-                      alignment: _messages[index].startsWith('You: ')
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        margin: EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          color: _messages[index].startsWith('You: ')
-                              ? Color(0xFF5C65BB) // 내가 보내는 채팅 배경색
-                              : const Color(0xFF121F33), // 챗봇의 채팅 배경색
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          _messages[index],
-                          style: TextStyle(
-                            color: _messages[index].startsWith('You: ')
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                  if (index < _messages.length) {
+                    final message = _messages[index];
+                    final isUserMessage = message.startsWith('You:');
+                    return _buildMessageBubble(message, isUserMessage);
+                  } else if (_questions.isNotEmpty) {
+                    final question =
+                        _questions.values.elementAt(_currentQuestionIndex);
+                    return _buildMessageBubble('Bot: $question', false);
+                  } else {
+                    return const SizedBox.shrink(); // No more questions to show
+                  }
                 },
               ),
             ),
@@ -150,24 +183,20 @@ class _ChatPageState extends State<ChatPage> {
           Row(
             children: [
               IconButton(
-                icon: Icon(Icons.mic),
-                onPressed: () {
-                  // 마이크 버튼 클릭 시 처리
-                },
-              ),
+                  icon: const Icon(Icons.mic),
+                  onPressed: () {}), // 마이크 기능 연결 필요
               Expanded(
                 child: TextFormField(
                   controller: _messageController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Type a message…',
                   ),
-                  onFieldSubmitted: _sendMessage,
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.check),
+                icon: const Icon(Icons.check),
                 onPressed: () {
-                  _sendMessage(_messageController.text);
+                  _handleUserResponse();
                 },
               ),
               IconButton(
@@ -180,6 +209,52 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMessageBubble(String message, bool isUserMessage) {
+    return Align(
+      alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          color: isUserMessage
+              ? const Color(0xFF5C65BB)
+              : const Color.fromARGB(255, 132, 134, 136),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(
+          message,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChatCom {
+  final String chat_room;
+  final String message;
+
+  ChatCom({
+    required this.chat_room,
+    required this.message,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'chat_room': chat_room,
+      'message': message,
+    };
+  }
+
+  factory ChatCom.fromJson(Map<String, dynamic> json) {
+    return ChatCom(
+      chat_room: json['chat_room'],
+      message: json['message'],
     );
   }
 }
