@@ -14,6 +14,7 @@ import 'package:good_swimming/tab/category/word/result_page.dart';
 import 'package:good_swimming/tab/category/word/test_page.dart';
 import 'package:good_swimming/tab/category/word/word_page.dart';
 import 'package:good_swimming/tab/home/home_page.dart';
+import 'package:good_swimming/tab/myPage/my_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 
 void main() async {
@@ -22,7 +23,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: SignUpPage());

@@ -56,52 +56,54 @@ class _CreatePageState extends State<CreatePage> {
         ),
       ),
       backgroundColor: const Color(0xFF030C1A),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-            _buildInputField(
-              controller: _wordController,
-              labelText: 'ENGLISH',
-              hintText: '영단어를 입력해주세요',
-            ),
-            const SizedBox(height: 20),
-            _buildInputField(
-              controller: _meaningController,
-              labelText: 'KOREAN',
-              hintText: '뜻을 입력해주세요',
-            ),
-            const SizedBox(height: 20),
-            _buildInputField(
-              controller: _example_enController,
-              labelText: 'EXAMPLE',
-              hintText: '예문을 입력해주세요',
-            ),
-            const SizedBox(height: 20),
-            _buildInputField(
-              controller: _example_krController,
-              labelText: 'EXAMPLE_KR',
-              hintText: '예문의 뜻을 입력해주세요',
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: _addWord,
-              icon: const Icon(
-                Icons.check_circle_outline,
-                color: Colors.white,
-                size: 60.0, //
+      body: SingleChildScrollView(
+        // 스크롤 가능한 컬럼을 감싸서 오버플로우 문제 해결
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+              _buildInputField(
+                controller: _wordController,
+                labelText: 'ENGLISH',
+                hintText: '영단어를 입력해주세요',
               ),
-              label: const SizedBox.shrink(),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                shadowColor: Colors.transparent,
+              const SizedBox(height: 20),
+              _buildInputField(
+                controller: _meaningController,
+                labelText: 'KOREAN',
+                hintText: '뜻을 입력해주세요',
               ),
-            ),
-            const SizedBox(height: 40),
-            Expanded(
-              child: ListView.builder(
+              const SizedBox(height: 20),
+              _buildInputField(
+                controller: _example_enController,
+                labelText: 'EXAMPLE',
+                hintText: '예문을 입력해주세요',
+              ),
+              const SizedBox(height: 20),
+              _buildInputField(
+                controller: _example_krController,
+                labelText: 'EXAMPLE_KR',
+                hintText: '예문의 뜻을 입력해주세요',
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                onPressed: _addWord,
+                icon: const Icon(
+                  Icons.check_circle_outline,
+                  color: Colors.white,
+                  size: 60.0,
+                ),
+                label: const SizedBox.shrink(),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+              ),
+              const SizedBox(height: 40),
+              ListView.builder(
+                shrinkWrap: true, // 추가
                 itemCount: _wordDataList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
@@ -111,8 +113,8 @@ class _CreatePageState extends State<CreatePage> {
                   );
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
