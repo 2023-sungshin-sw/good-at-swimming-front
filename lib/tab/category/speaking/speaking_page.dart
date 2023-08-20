@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/category_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +41,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
         backgroundColor: const Color(0xFF030C1A),
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () {
+            // 메뉴바를 누를 때 CategoryPage로 이동
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CategoryPage()),
+            );
+          },
         ),
         title: const Text(
           'SPEAKING TOPIC',
