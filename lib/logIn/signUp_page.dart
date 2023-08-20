@@ -60,7 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: jsonEncode({'phone': phoneNumber}),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       final data = jsonDecode(response.body);
       final isAvailable = data['isAvailable'] as bool;
 
