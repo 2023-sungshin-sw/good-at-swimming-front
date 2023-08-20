@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:http/http.dart';
@@ -19,8 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
 
   bool isAllFieldsFilled() {
-    return phoneController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty;
+    return phoneController.text.trim().isNotEmpty &&
+        passwordController.text.trim().isNotEmpty;
   }
 
   void _showToast(BuildContext context, String message) {
