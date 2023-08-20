@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/speaking/chat_page.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MyApp());
@@ -30,11 +33,32 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
-  final List<FeedbackItem> _feedbackList = [
-    FeedbackItem(originalText: 'Original Text 1', fixText: 'Fix Text 1'),
-    FeedbackItem(originalText: 'Original Text 2', fixText: 'Fix Text 2'),
-    FeedbackItem(originalText: 'Original Text 3', fixText: 'Fix Text 3'),
-  ];
+  List<FeedbackItem> _feedbackList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(
+        Uri.parse('http://www.good-at-swimming-back.store/chat/feedback/48'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> feedbackData = json.decode(response.body);
+      setState(() {
+        _feedbackList = feedbackData
+            .map((feedback) => FeedbackItem(
+                  originalText: feedback['original_sentence'],
+                  fixText: feedback['fix_sentence'],
+                ))
+            .toList();
+      });
+    } else {
+      throw Exception('Failed to load feedback data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +68,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
           backgroundColor: const Color(0xFF030C1A),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatPage()),
+              );
+            },
           ),
           title: const Text(
             'FEEDBACK',
@@ -54,12 +83,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
         backgroundColor: const Color(0xFF030C1A),
         body: SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(8),
-            itemCount: _feedbackList.length,
-            itemBuilder: (BuildContext context, int index) {
+          child: Column(
+            children: _feedbackList.map((feedback) {
               return Column(
                 children: [
                   SizedBox(height: 20),
@@ -74,9 +99,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            _feedbackList[index].originalText,
-                            style: const TextStyle(
-                                fontSize: 20, color: Colors.white),
+                            feedback.originalText,
+                            style: TextStyle(fontSize: 20, color: Colors.white),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -88,8 +112,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
                               ),
                               SizedBox(width: 5),
                               Text(
-                                _feedbackList[index].fixText,
-                                style: const TextStyle(
+                                feedback.fixText,
+                                style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               ),
                             ],
@@ -101,7 +125,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   SizedBox(height: 20),
                 ],
               );
-            },
+            }).toList(),
           ),
         ),
       ),

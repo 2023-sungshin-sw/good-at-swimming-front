@@ -118,25 +118,25 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  /*void _startListening() async {
-    bool available = await _speech.initialize();
-    if (available) {
-      _speech.listen(
-        onResult: (result) {
-          setState(() {
-            _messageController.text = result.recognizedWords;
-          });
-        },
-      );
-    } else {
-      print('The user has denied the use of speech recognition.');
-    }
-  }
+  // void _startListening() async {
+  //   bool available = await _speech.initialize();
+  //   if (available) {
+  //     _speech.listen(
+  //       onResult: (result) {
+  //         setState(() {
+  //           _messageController.text = result.recognizedWords;
+  //         });
+  //       },
+  //     );
+  //   } else {
+  //     print('음성 인식 사용 권한이 거부되었습니다.');
+  //   }
+  // }
 
   // 마이크 버튼 클릭 시 중지 처리
-  void _stopListening() {
-    _speech.stop();
-  }*/
+  // void _stopListening() {
+  //   _speech.stop();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +183,11 @@ class _ChatPageState extends State<ChatPage> {
           Row(
             children: [
               IconButton(
-                  icon: const Icon(Icons.mic),
-                  onPressed: () {}), // 마이크 기능 연결 필요
+                icon: const Icon(Icons.mic),
+                onPressed: () {
+                  //_startListening();
+                },
+              ), // 마이크 기능 연결 필요
               Expanded(
                 child: TextFormField(
                   controller: _messageController,
@@ -202,6 +205,11 @@ class _ChatPageState extends State<ChatPage> {
               IconButton(
                 icon: Icon(Icons.arrow_forward),
                 onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FeedbackPage()),
+                  );
                   // 화살표 버튼 클릭 시 처리
                 },
               ),
