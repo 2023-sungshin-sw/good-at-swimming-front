@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
       SnackBar(
         content: Container(
           width: 311,
-          height: 13,
+          height: 17,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 51, 50, 50),
             borderRadius: BorderRadius.circular(8.0),
@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
               style: const TextStyle(
                 color: Colors.white,
                 fontFamily: 'Inter',
-                fontSize: 1,
+                fontSize: 12,
                 fontWeight: FontWeight.w100,
               ),
             ),
@@ -254,16 +254,18 @@ class _SignUpPageState extends State<SignUpPage> {
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
                             onPressed: () {
-                              if (passwordController.text ==
+                              if (phoneController.text == null ||
+                                  phoneController.text.isEmpty) {
+                                _showToast(context, "전화번호를 입력해주세요");
+                              } else if (passwordController.text !=
                                   passwordC_Controller.text) {
-                                passwordsMatch = true;
-                                sendDataToBackend();
-                              } else {
                                 setState(() {
                                   passwordsMatch = false;
                                 });
-                                _showToast(context,
-                                    "Passwords do not match"); // 토스트 메시지 띄우기
+                                _showToast(context, "비밀번호가 일치하지 않습니다");
+                              } else {
+                                passwordsMatch = true;
+                                sendDataToBackend();
                               }
                             },
                             child: const Text(
