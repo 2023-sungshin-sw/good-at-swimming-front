@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final String phoneNumber = phoneController.text;
 
     final Uri uri =
-        Uri.parse('http://www.good-at-swimming-back.store/user/check-phone/');
+        Uri.parse('http://www.good-at-swimming-back.store/user/join/');
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
