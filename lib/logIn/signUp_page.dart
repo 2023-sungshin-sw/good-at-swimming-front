@@ -99,6 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
       if (response.statusCode == 200) {
         // 요청이 성공한 경우
         print('Data sent successfully');
+        _showToast(context, "회원가입이 완료되었습니다!");
       } else {
         // 요청이 실패한 경우
         print('Failed to send data. Status code: ${response.statusCode}');
