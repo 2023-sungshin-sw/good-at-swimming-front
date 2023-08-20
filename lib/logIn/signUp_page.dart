@@ -71,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
       if (!isAvailable) {
         _showToast(context, "이미 사용 중인 전화번호입니다.");
       } else {
-        print('중복확인이 불가능합니다.');
+        print('Failed to send data. Status code: ${response.statusCode}');
       }
     }
   }
@@ -82,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final String password = passwordController.text;
 
     final Uri uri =
-        Uri.parse('http://www.good-at-swimming-back.store/user/join');
+        Uri.parse('http://www.good-at-swimming-back.store/user/join/');
     final Information = informationData(
       name: name,
       phone: phone,
@@ -281,7 +281,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
-                            onPressed: () {
+                            onPressed: () async {
                               if (phoneController.text == null ||
                                   phoneController.text.isEmpty) {
                                 _showToast(context, "전화번호를 입력해주세요");
@@ -293,6 +293,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                 _showToast(context, "비밀번호가 일치하지 않습니다");
                               } else {
                                 passwordsMatch = true;
+                                await checkPhoneNumberAvailability();
+                              }
+                              if (isUsernameAvailable) {
                                 sendDataToBackend();
                               }
                             },
