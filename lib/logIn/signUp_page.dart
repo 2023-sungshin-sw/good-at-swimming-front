@@ -49,12 +49,40 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Future<void> checkPhoneNumberAvailability() async {
+    final String phoneNumber = phoneController.text;
+
+    final Uri uri =
+        Uri.parse('http://www.good-at-swimming-back.store/user/join/');
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'phone': phoneNumber}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final isAvailable = data['isAvailable'] as bool;
+
+      setState(() {
+        isUsernameAvailable = isAvailable;
+      });
+
+      if (!isAvailable) {
+        _showToast(context, "이미 사용 중인 전화번호입니다.");
+      } else {
+        print('중복확인이 불가능합니다.');
+      }
+    }
+  }
+
   Future<void> sendDataToBackend() async {
     final String name = nameController.text;
     final String phone = phoneController.text;
     final String password = passwordController.text;
 
-    final Uri uri = Uri.parse('http://www.good-at-swimming-back.store/user/');
+    final Uri uri =
+        Uri.parse('http://www.good-at-swimming-back.store/user/join');
     final Information = informationData(
       name: name,
       phone: phone,
