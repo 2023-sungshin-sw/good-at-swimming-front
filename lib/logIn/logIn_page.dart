@@ -1,4 +1,11 @@
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/home/home_page.dart';
+import 'package:http/http.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,6 +15,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool isAllFieldsFilled() {
+    return phoneController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty;
+  }
+
+  void _showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+
+  void _login() async {
+    final String phone = phoneController.text;
+    final String password = passwordController.text;
+
+    final Uri uri =
+        Uri.parse("http://www.good-at-swimming-back.store/user/login/");
+    final response = await http.post(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'phone': phone, 'password': password}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final String state = data['state'];
+
+      if (state == 'success') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        _showToast(context, "아이디 혹은 비밀번호가 틀렸습니다");
+      }
+    } else {
+      _showToast(context, "로그인에 실패하였습니다.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
+                          controller: phoneController,
                           decoration: const InputDecoration(
                             //폰 번호 입력 부분
                             hintText: 'Enter your phone #',
@@ -89,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: TextFormField(
+                          controller: passwordController,
                           obscureText: true,
                           // 비밀번호 입력 부분
                           decoration: const InputDecoration(
@@ -105,7 +163,13 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
-                            onPressed: () {},
+                            onPressed: isAllFieldsFilled()
+                                ? () {
+                                    _login();
+                                  }
+                                : () {
+                                    _showToast(context, "모든 칸을 작성해주세요");
+                                  },
                             child: const Text(
                               "Log in",
                               style: TextStyle(
