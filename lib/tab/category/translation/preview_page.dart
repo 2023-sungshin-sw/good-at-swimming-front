@@ -22,6 +22,8 @@ class _PhotoPreviewState extends State<PhotoPreview> {
     var bytes = await File(widget.imagePath).readAsBytes();
     String img64 = base64Encode(bytes);
 
+    print('Image Path: ${widget.imagePath}');
+
     var url = 'https://api.ocr.space/parse/image';
     var payload = {"base64Image": "data:image/jpg;base64,$img64"};
     var header = {"apikey": apiKey};
@@ -30,8 +32,11 @@ class _PhotoPreviewState extends State<PhotoPreview> {
     var result = jsonDecode(post.body);
 
     setState(() {
-      parsedtext = result['ParsedResults'][0]['ParsedText'];
-      print(parsedtext);
+      var parsedText = result['ParsedResults'][0]['ParsedText'];
+      print('Parsed Text: $parsedText'); // 디버그 프린트
+      if (parsedText != null && parsedText.isNotEmpty) {
+        parsedtext = parsedText;
+      }
     });
 
     if (parsedtext.isNotEmpty) {

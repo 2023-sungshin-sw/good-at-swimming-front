@@ -26,7 +26,7 @@ class _CameraScreenState extends State<CameraScreen> {
       if (cameras.isNotEmpty && _cameraController == null) {
         _cameraController = CameraController(
           cameras.first,
-          ResolutionPreset.ultraHigh,
+          ResolutionPreset.medium,
         );
 
         _cameraController!.initialize().then((_) {

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:good_swimming/tab/category/translation/camera_screen.dart';
 //import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-//git push
 
 class ScanTranslatePage extends StatefulWidget {
   const ScanTranslatePage({super.key, required this.parsedText});
@@ -14,25 +12,20 @@ class ScanTranslatePage extends StatefulWidget {
   _ScanTranslatePageState createState() => _ScanTranslatePageState();
 }
 
-class WordWithMeaning {
-  final int user;
-  final String word;
-  final String meaning;
-
-  WordWithMeaning(this.user, this.word, this.meaning);
-}
-
 class _ScanTranslatePageState extends State<ScanTranslatePage> {
   bool isEnglishToKorean = true; // English to Korean 번역 모드인지 여부
   List<String> translated_text = []; // 번역된 텍스트
-  List<String> predefinedText = []; //스캔해서 받아올 문장 리스트 예시
-  List<String> _selectedWords = []; //저장할 단어 리스트
-  //List<String> _translatedWords = []; //번역된 단어 리스트
+  List<String> predefinedText = [
+    'We have to finish our project today.',
+    'We will be the winning team.'
+  ]; //스캔해서 받아올 문장 리스트 예시
+  final List<String> _selectedWords = []; //저장할 단어 리스트
   late String selectedWord;
-  late String translatedWord;
-  List<String> _translateWords = [];
-  bool _isButtonVisible = false;
-  Offset? _buttonPosition;
+  late String translatedWord = ' ';
+  final List<String> _translateWords = [];
+
+  bool isEmpty = true;
+  final List<WordWithMeaning> _wordWithMeaning = [];
 
   List<String> splitSentencesIntoWords(predefinedText) {
     List<String> words = [];
@@ -44,16 +37,9 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
     return words;
   }
 
-  void _handleButtonPressed() {
-    setState(() {
-      _isButtonVisible = false; // 버튼을 눌렀으므로 다시 숨김
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    predefinedText.add(widget.parsedText);
     translateText();
   }
 
@@ -124,13 +110,84 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
 
         setState(() {
           translatedWord = translatedText;
+          _translateWords.add(translatedWord);
         });
+        print(_translateWords);
+        sendData();
       } else {
         setState(() {
           print('Error: Unable to translate');
         });
       }
     }
+  }
+
+  Future<void> sendData() async {
+    for (int i = 0; i < _selectedWords.length; i++) {
+      final word = _selectedWords[i];
+      final meaning = _translateWords[i];
+
+      final newWordMeaning = WordWithMeaning(
+        user: 1,
+        word: word,
+        meaning: meaning,
+      );
+
+      try {
+        final response = await http.post(
+          Uri.parse('http://www.good-at-swimming-back.store/words/'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(newWordMeaning.toJson()),
+        );
+
+        if (response.statusCode == 200) {
+          setState(() {
+            _wordWithMeaning.add(newWordMeaning);
+            _wordWithMeaning.clear();
+          });
+          showToast('단어가 저장되었습니다!');
+        } else {
+          showToast('서버로 데이터 전송에 실패했습니다');
+        }
+      } catch (e) {
+        print('Error: $e');
+        showToast('오류가 발생했습니다');
+      }
+      setState(() {
+        _selectedWords.clear();
+        _translateWords.clear();
+      });
+    }
+  }
+
+  void showToast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Container(
+          width: 311,
+          height: 13,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 51, 50, 50),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Center(
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Inter',
+                fontSize: 10,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+    );
   }
 
   @override
@@ -159,131 +216,164 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 40),
-            Container(
-              width: 330,
-              height: 200,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFF5C65BB),
-                    Color.fromARGB(255, 153, 156, 197)
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const Text('English',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 2,
-                      children: predefinedText.expand((sentence) {
-                        return sentence.split(' ').map((word) {
-                          return Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  setState(() {
-                                    //_selectedWords = [];
-                                    _selectedWords.add(word);
-                                    int lastIndex = _selectedWords.length - 1;
-                                    //print(_selectedWords.length);
-                                    selectedWord = _selectedWords[lastIndex];
-                                    translateWord();
-                                    _translateWords.add(translatedWord);
-                                    int lastIndexOfTranslation =
-                                        _translateWords.length;
-                                    translatedWord = _translateWords[
-                                        lastIndexOfTranslation - 1];
-                                    //translateWord();
-                                    //_translateWords.add(translatedWord);
-                                    print(_translateWords);
-                                    print(selectedWord);
-                                    print(translatedWord);
-                                  });
-                                },
-                                child: Text(
-                                  word,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              ),
-                              if (_isButtonVisible)
-                                Positioned(
-                                  left: _buttonPosition!.dx,
-                                  top: _buttonPosition!.dy,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _handleButtonPressed();
-                                    },
-                                    child: const Text('SAVE'),
-                                  ),
-                                ),
-                            ],
-                          );
-                        }).toList();
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 40),
-            Container(
-              width: 330,
-              height: 200,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF5C65BB),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const Text('Korean',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left),
-                    const SizedBox(height: 10),
-                    Text(
-                      translated_text.join(' '),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 40),
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF152F8D),
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.camera_alt),
-                color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()),
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Text('텍스트를 누르면 단어가 저장됩니다'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('닫기'),
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
+                child: const Text(
+                  'TIP',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Player',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
               ),
-            ),
-          ],
+              Container(
+                width: 330,
+                height: 200,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF5C65BB),
+                      Color.fromARGB(255, 153, 156, 197)
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Text('English',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.left),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 2,
+                        children: predefinedText.expand((sentence) {
+                          return sentence.split(' ').map((word) {
+                            return Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    setState(() {
+                                      _selectedWords.add(word);
+                                      int lastIndex = _selectedWords.length - 1;
+                                      selectedWord = _selectedWords[lastIndex];
+                                      translateWord();
+                                      print(_selectedWords);
+                                    });
+                                  },
+                                  child: Text(
+                                    word,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList();
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 40),
+              Container(
+                width: 330,
+                height: 200,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF5C65BB),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Text('Korean',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.left),
+                      const SizedBox(height: 10),
+                      Text(
+                        translated_text.join(' '),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF152F8D),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.camera_alt),
+                  color: Colors.white,
+                  onPressed: () {
+                    /*Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ScanPage()),
+                    );*/
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class WordWithMeaning {
+  final int user;
+  final String word;
+  final String meaning;
+
+  WordWithMeaning(
+      {required this.user, required this.word, required this.meaning});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user': user,
+      'word': word,
+      'meaning': meaning,
+    };
+  }
+
+  factory WordWithMeaning.fromJson(Map<String, dynamic> json) {
+    return WordWithMeaning(
+      user: json['user'],
+      word: json['word'],
+      meaning: json['meaning'],
     );
   }
 }
