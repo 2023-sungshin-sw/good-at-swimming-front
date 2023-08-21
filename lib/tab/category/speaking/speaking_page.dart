@@ -139,6 +139,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
                   onTap: () {
                     setState(() {
                       topic = 'restaurant';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
                       _isCheckedSecond = !_isCheckedSecond;
                     });
                   },
@@ -185,6 +192,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
                   onTap: () {
                     setState(() {
                       topic = 'hotel';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
                       _isCheckedThird = !_isCheckedThird;
                     });
                   },
@@ -231,6 +245,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
                   onTap: () {
                     setState(() {
                       topic = 'airplane';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
                       _isCheckedFourth = !_isCheckedFourth;
                     });
                   },
@@ -277,6 +298,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
                   onTap: () {
                     setState(() {
                       topic = 'festival';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
                       _isCheckedFifth = !_isCheckedFifth;
                     });
                   },
@@ -323,6 +351,13 @@ class _SpeakingPageState extends State<SpeakingPage> {
                   onTap: () {
                     setState(() {
                       topic = 'clothing Store';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
                       _isCheckedSixth = !_isCheckedSixth;
                     });
                   },

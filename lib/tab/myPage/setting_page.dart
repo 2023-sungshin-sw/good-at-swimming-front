@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/myPage/my_page.dart';
+import 'package:good_swimming/tab/tab_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,7 +29,8 @@ class SettingPage extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const MyPage()),
+              MaterialPageRoute(
+                  builder: (context) => const TabPage(selectedTab: 2)),
             );
           },
         ),
