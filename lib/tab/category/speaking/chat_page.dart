@@ -6,21 +6,10 @@ import 'dart:convert';
 import 'package:good_swimming/tab/category/speaking/speaking_page.dart'; // 추가된 부분
 import 'package:speech_to_text/speech_to_text.dart' as stt; // 추가된 부분
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ChatPage(),
-    );
-  }
-}
-
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  final String Topic;
+
+  ChatPage({required this.Topic});
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -48,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://www.good-at-swimming-back.store/chat/start/theater/1'),
+            'http://www.good-at-swimming-back.store/chat/start/${widget.Topic}/1'),
       );
 
       if (response.statusCode == 200) {

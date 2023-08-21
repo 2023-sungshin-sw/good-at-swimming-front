@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/category_page.dart';
+import 'package:good_swimming/tab/category/speaking/chat_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
   bool _isCheckedSixth = false;
   bool _isCheckedSeventh = false;
   bool _isCheckedEighth = false;
+  String topic = '';
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +72,9 @@ class _SpeakingPageState extends State<SpeakingPage> {
                       _isCheckedFirst ? Color(0xFFADADB0) : Color(0xFF121F33),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: Center(
-                  child: const Text(
-                    'TOPIC 1',
+                child: const Center(
+                  child: Text(
+                    '영화관',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -81,6 +83,15 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'cinema';
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ChatPage(Topic: topic), // topic 값을 전달
+                        ),
+                      );
+
                       _isCheckedFirst = !_isCheckedFirst;
                     });
                   },
@@ -116,7 +127,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 ),
                 child: Center(
                   child: const Text(
-                    'TOPIC 2',
+                    '음식점',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -125,6 +136,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'restaurant';
                       _isCheckedSecond = !_isCheckedSecond;
                     });
                   },
@@ -160,7 +172,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 ),
                 child: Center(
                   child: const Text(
-                    'TOPIC 3',
+                    '호텔',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -169,6 +181,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'hotel';
                       _isCheckedThird = !_isCheckedThird;
                     });
                   },
@@ -204,7 +217,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 ),
                 child: Center(
                   child: const Text(
-                    'TOPIC 4',
+                    '비행기',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -213,6 +226,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'airplane';
                       _isCheckedFourth = !_isCheckedFourth;
                     });
                   },
@@ -248,7 +262,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 ),
                 child: Center(
                   child: const Text(
-                    'TOPIC 5',
+                    '페스티벌',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -257,6 +271,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'festival';
                       _isCheckedFifth = !_isCheckedFifth;
                     });
                   },
@@ -292,7 +307,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 ),
                 child: Center(
                   child: const Text(
-                    'TOPIC 6',
+                    '옷가게',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
@@ -301,6 +316,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
+                      topic = 'clothing Store';
                       _isCheckedSixth = !_isCheckedSixth;
                     });
                   },
