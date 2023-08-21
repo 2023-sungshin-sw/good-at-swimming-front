@@ -32,15 +32,16 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         '오늘의 영어 표현',
                         style: TextStyle(
-                          fontFamily: 'Kr',
+                          fontFamily: 'QQ',
                           color: Colors.white,
                           fontSize: 30,
+                          letterSpacing: 2.0,
                           fontWeight: FontWeight.bold,
                           shadows: [
                             Shadow(
                               color: Colors.black,
                               offset: Offset(2, 2),
-                              blurRadius: 4,
+                              blurRadius: 2,
                             ),
                           ],
                         ),
@@ -49,20 +50,24 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Tomorrow hopes we have learned \nsomething from yesterday.', // 영어 표현 한문장
                         style: TextStyle(
-                          fontFamily: 'En',
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+                            fontFamily: 'QQ',
+                            letterSpacing: 2.0,
+                            height: 1.5,
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 15),
                       Text(
                         '내일은 우리가 어제로부터 \n무엇인가 배웠기를 바란다.', // 한국말 해석
                         style: TextStyle(
-                          fontFamily: 'Kr',
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+                            fontFamily: 'QQ',
+                            letterSpacing: 2.0,
+                            height: 1.5,
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ],

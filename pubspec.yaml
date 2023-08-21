@@ -71,7 +71,9 @@ flutter:
     - family: Kr
       fonts:
         - asset: fonts/LINESeedSans_A_bd.otf
-
+    - family: QQ
+      fonts:
+        - asset: fonts/TAEBAEK milkyway.otf
   assets:
     - assets/Frame 10.png
     - assets/수룡.png

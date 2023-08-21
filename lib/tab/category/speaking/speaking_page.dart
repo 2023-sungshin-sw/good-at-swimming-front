@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/category_page.dart';
 import 'package:good_swimming/tab/category/speaking/chat_page.dart';
+import 'package:good_swimming/tab/tab_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,7 +48,7 @@ class _SpeakingPageState extends State<SpeakingPage> {
             // 메뉴바를 누를 때 CategoryPage로 이동
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CategoryPage()),
+              MaterialPageRoute(builder: (context) => TabPage(selectedTab: 1)),
             );
           },
         ),
