@@ -77,10 +77,6 @@ class _ChatPageState extends State<ChatPage> {
   void _handleUserResponse() async {
     final userResponse = _messageController.text;
 
-    setState(() {
-      _messages.add('You: $userResponse');
-    });
-
     final newChatCom = {
       "chat_room": _roomId.toString(),
       "message": userResponse,
@@ -95,7 +91,7 @@ class _ChatPageState extends State<ChatPage> {
         body: jsonEncode(newChatCom),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         print('데이터를 백엔드로 성공적으로 전송했습니다');
       } else {
         print('데이터 전송 실패. 상태 코드: ${response.statusCode}');
@@ -103,7 +99,48 @@ class _ChatPageState extends State<ChatPage> {
     } catch (e) {
       print('데이터를 백엔드로 전송하는 중 오류 발생: $e');
     }
-    if (_currentQuestionIndex < _questions.length - 1) {
+
+    setState(() {
+      _messages.add('You: $userResponse');
+      _messageController.text = '';
+      _currentQuestionIndex++;
+      if (_currentQuestionIndex < _questions.length) {
+        // If there are more questions, show the next question
+        //_currentQuestionIndex++;
+        final nextQuestion = _questions.values.elementAt(_currentQuestionIndex);
+        _messages.add('Bot: $nextQuestion');
+      } else {
+        // No more questions, chat is done
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FeedbackPage()),
+        );
+      }
+    });
+
+    /*final newChatCom = {
+      "chat_room": _roomId.toString(),
+      "message": userResponse,
+    };*/
+
+    /*try {
+      final response = await http.post(
+        Uri.parse('http://www.good-at-swimming-back.store/chat/reply/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(newChatCom),
+      );
+
+      if (response.statusCode == 201) {
+        print('데이터를 백엔드로 성공적으로 전송했습니다');
+      } else {
+        print('데이터 전송 실패. 상태 코드: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('데이터를 백엔드로 전송하는 중 오류 발생: $e');
+    }
+    /*if (_currentQuestionIndex < _questions.length - 1) {
       // If there are more questions, show the next question
       _currentQuestionIndex++;
       final nextQuestion = _questions.values.elementAt(_currentQuestionIndex);
@@ -115,28 +152,28 @@ class _ChatPageState extends State<ChatPage> {
         context,
         MaterialPageRoute(builder: (context) => const FeedbackPage()),
       );
+    }*/*/
+  }
+
+  /*void _startListening() async {
+    bool available = await _speech.initialize();
+    if (available) {
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            _messageController.text = result.recognizedWords;
+          });
+        },
+      );
+    } else {
+      print('The user has denied the use of speech recognition.');
     }
   }
 
-  // void _startListening() async {
-  //   bool available = await _speech.initialize();
-  //   if (available) {
-  //     _speech.listen(
-  //       onResult: (result) {
-  //         setState(() {
-  //           _messageController.text = result.recognizedWords;
-  //         });
-  //       },
-  //     );
-  //   } else {
-  //     print('음성 인식 사용 권한이 거부되었습니다.');
-  //   }
-  // }
-
   // 마이크 버튼 클릭 시 중지 처리
-  // void _stopListening() {
-  //   _speech.stop();
-  // }
+  void _stopListening() {
+    _speech.stop();
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +220,8 @@ class _ChatPageState extends State<ChatPage> {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.mic),
-                onPressed: () {
-                  //_startListening();
-                },
-              ), // 마이크 기능 연결 필요
+                  icon: const Icon(Icons.mic),
+                  onPressed: () {}), // 마이크 기능 연결 필요
               Expanded(
                 child: TextFormField(
                   controller: _messageController,
@@ -205,11 +239,6 @@ class _ChatPageState extends State<ChatPage> {
               IconButton(
                 icon: Icon(Icons.arrow_forward),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FeedbackPage()),
-                  );
                   // 화살표 버튼 클릭 시 처리
                 },
               ),

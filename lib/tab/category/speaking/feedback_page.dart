@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/speaking/chat_page.dart';
+import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -34,6 +35,7 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPageState extends State<FeedbackPage> {
   List<FeedbackItem> _feedbackList = [];
+  String feedback_id = '22';
 
   @override
   void initState() {
@@ -41,12 +43,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
     fetchData();
   }
 
+  String API = 'http://www.good-at-swimming-back.store/chat/feedback/48';
+
   Future<void> fetchData() async {
-    final response = await http.get(
-        Uri.parse('http://www.good-at-swimming-back.store/chat/feedback/48'));
+    final response = await http.get(Uri.parse(API));
 
     if (response.statusCode == 200) {
-      final List<dynamic> feedbackData = json.decode(response.body);
+      final List<dynamic> feedbackData =
+          jsonDecode(utf8.decode(response.bodyBytes));
+
+      print(feedbackData);
       setState(() {
         _feedbackList = feedbackData
             .map((feedback) => FeedbackItem(
@@ -71,13 +77,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ChatPage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
           ),
           title: const Text(
             'FEEDBACK',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Player'),
           ),
           centerTitle: true,
         ),
@@ -105,15 +114,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.arrow_forward,
                                 color: Colors.white,
                                 size: 20,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 feedback.fixText,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 20, color: Colors.white),
                               ),
                             ],
@@ -122,7 +131,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               );
             }).toList(),
