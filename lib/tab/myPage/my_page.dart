@@ -63,9 +63,9 @@ class _MyPageState extends State<MyPage> {
           ),
           SizedBox(height: 20),
           Image.asset(
-            'assets/수룡.png', // 캘린더 이미지 파일이 안뜸, 일단 수룡
-            width: 300,
-            height: 300,
+            'assets/calendar.png',
+            width: 350,
+            height: 350,
           ),
           SizedBox(height: 20),
           ElevatedButton(
