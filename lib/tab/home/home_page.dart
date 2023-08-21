@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 30),
                       Text(
-                        'Tomorrow hopes we have learned something from yesterday.', // 영어 표현 한문장
+                        'Tomorrow hopes we have learned \nsomething from yesterday.', // 영어 표현 한문장
                         style: TextStyle(
                           fontFamily: 'En',
                           color: Colors.white,
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       SizedBox(height: 15),
                       Text(
-                        '내일은 우리가 어제로부터 무엇인가 배웠기를 바란다.', // 한국말 해석
+                        '내일은 우리가 어제로부터 \n무엇인가 배웠기를 바란다.', // 한국말 해석
                         style: TextStyle(
                           fontFamily: 'Kr',
                           color: Colors.white,
