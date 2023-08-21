@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                             letterSpacing: 2.0,
                             height: 1.5,
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),

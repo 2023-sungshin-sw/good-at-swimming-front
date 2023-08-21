@@ -114,228 +114,232 @@ class _TranslatePageState extends State<TranslatePage> {
               fontFamily: 'En'),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            if (isEnglishToKorean)
-              Container(
-                width: 330,
-                height: 200,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF5C65BB),
-                      Color.fromARGB(255, 153, 156, 197)
-                    ], // 그라디언트 색상 설정
-                    begin: Alignment.topLeft, // 시작점 설정
-                    end: Alignment.bottomRight, // 끝점 설정
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    const Text('English',
-                        style: TextStyle(fontSize: 16, fontFamily: 'En'),
-                        textAlign: TextAlign.left),
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Enter text',
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          inputText = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: translateText,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 242, 84, 5)),
-                      child: const Text(
-                        'Translate',
-                        style: TextStyle(color: Colors.white, fontFamily: 'En'),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            else
-              Container(
-                width: 330,
-                height: 200,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF5C65BB),
-                      Color.fromARGB(255, 153, 156, 197)
-                    ], // 그라디언트 색상 설정
-                    begin: Alignment.topLeft, // 시작점 설정
-                    end: Alignment.bottomRight, // 끝점 설정
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    const Text('Korean',
-                        style: TextStyle(fontSize: 16, fontFamily: 'En'),
-                        textAlign: TextAlign.left),
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: '한국어 입력',
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          inputText = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: translateText,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 242, 84, 5)),
-                      child: const Text(
-                        'Translate',
-                        style: TextStyle(color: Colors.white, fontFamily: 'En'),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            const SizedBox(height: 10),
-            Container(
-              width: 330,
-              height: 200,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFF5C65BB),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                children: [
-                  Text(isEnglishToKorean ? 'Korean' : 'English',
-                      style: const TextStyle(fontSize: 16, fontFamily: 'En'),
-                      textAlign: TextAlign.left),
-                  Text(
-                    translated_text,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Stack(
-              alignment: Alignment.center,
-              children: [
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              if (isEnglishToKorean)
                 Container(
                   width: 330,
-                  height: 60,
+                  height: 200,
                   decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(30),
-                    color: const Color(0xFF1A254F),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF5C65BB),
+                        Color.fromARGB(255, 153, 156, 197)
+                      ], // 그라디언트 색상 설정
+                      begin: Alignment.topLeft, // 시작점 설정
+                      end: Alignment.bottomRight, // 끝점 설정
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      const Text('English',
+                          style: TextStyle(fontSize: 16, fontFamily: 'En'),
+                          textAlign: TextAlign.left),
+                      TextField(
+                        decoration: const InputDecoration(
+                          hintText: 'Enter text',
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            inputText = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: translateText,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 242, 84, 5)),
+                        child: const Text(
+                          'Translate',
+                          style:
+                              TextStyle(color: Colors.white, fontFamily: 'En'),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                Container(
+                  width: 330,
+                  height: 200,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF5C65BB),
+                        Color.fromARGB(255, 153, 156, 197)
+                      ], // 그라디언트 색상 설정
+                      begin: Alignment.topLeft, // 시작점 설정
+                      end: Alignment.bottomRight, // 끝점 설정
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      const Text('Korean',
+                          style: TextStyle(fontSize: 16, fontFamily: 'En'),
+                          textAlign: TextAlign.left),
+                      TextField(
+                        decoration: const InputDecoration(
+                          hintText: '한국어 입력',
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            inputText = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: translateText,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 242, 84, 5)),
+                        child: const Text(
+                          'Translate',
+                          style:
+                              TextStyle(color: Colors.white, fontFamily: 'En'),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                if (isEnglishToKorean)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'English',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'En'),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF152F8D),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.swap_horiz),
-                          color: Colors.white,
-                          iconSize: 40,
-                          onPressed: toggleTranslationMode,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'Korean',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'En'),
-                      ),
-                    ],
-                  )
-                else
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Korean',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'En'),
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFF152F8D),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.swap_horiz),
-                          color: Colors.white,
-                          iconSize: 40,
-                          onPressed: toggleTranslationMode,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        'English',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: 'En'),
-                      ),
-                    ],
+              const SizedBox(height: 10),
+              Container(
+                width: 330,
+                height: 200,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF5C65BB),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Text(isEnglishToKorean ? 'Korean' : 'English',
+                        style: const TextStyle(fontSize: 16, fontFamily: 'En'),
+                        textAlign: TextAlign.left),
+                    Text(
+                      translated_text,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 330,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xFF1A254F),
+                    ),
                   ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF152F8D),
+                  if (isEnglishToKorean)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'English',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'En'),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          width: 70,
+                          height: 70,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF152F8D),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.swap_horiz),
+                            color: Colors.white,
+                            iconSize: 40,
+                            onPressed: toggleTranslationMode,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'Korean',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'En'),
+                        ),
+                      ],
+                    )
+                  else
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Korean',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'En'),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          width: 70,
+                          height: 70,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF152F8D),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.swap_horiz),
+                            color: Colors.white,
+                            iconSize: 40,
+                            onPressed: toggleTranslationMode,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        const Text(
+                          'English',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontFamily: 'En'),
+                        ),
+                      ],
+                    ),
+                ],
               ),
-              child: IconButton(
-                icon: const Icon(Icons.camera_alt),
-                color: Colors.white,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CameraScreen()),
-                  );
-                },
+              const SizedBox(height: 20),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF152F8D),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.camera_alt),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CameraScreen()),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
