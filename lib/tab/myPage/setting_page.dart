@@ -35,11 +35,10 @@ class SettingPage extends StatelessWidget {
         title: const Text(
           'SETTING',
           style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.5,
-            fontFamily: 'Player',
-          ),
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 2.5,
+              fontFamily: 'En'),
         ),
       ),
       body: Column(
@@ -80,9 +79,7 @@ class SettingPage extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Kr'),
       ),
     );
   }

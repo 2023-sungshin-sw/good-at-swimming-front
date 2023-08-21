@@ -52,7 +52,7 @@ class _CreatePageState extends State<CreatePage> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       backgroundColor: const Color(0xFF030C1A),
@@ -107,8 +107,14 @@ class _CreatePageState extends State<CreatePage> {
                 itemCount: _wordDataList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(_wordDataList[index].word),
-                    subtitle: Text(_wordDataList[index].meaning),
+                    title: Text(
+                      _wordDataList[index].word,
+                      style: TextStyle(fontFamily: 'En'),
+                    ),
+                    subtitle: Text(
+                      _wordDataList[index].meaning,
+                      style: TextStyle(fontFamily: 'Kr'),
+                    ),
                     trailing: const Icon(Icons.edit),
                   );
                 },
@@ -211,7 +217,7 @@ class _CreatePageState extends State<CreatePage> {
               message,
               style: const TextStyle(
                 color: Colors.white,
-                fontFamily: 'Inter',
+                fontFamily: 'Kr',
                 fontSize: 10,
                 fontWeight: FontWeight.w100,
               ),

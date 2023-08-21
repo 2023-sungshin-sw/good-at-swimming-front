@@ -76,9 +76,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           title: const Text(
             'FEEDBACK',
             style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Player'),
+                fontSize: 25, fontWeight: FontWeight.bold, fontFamily: 'En'),
           ),
           centerTitle: true,
         ),
@@ -102,8 +100,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                           Flexible(
                             child: Text(
                               feedback.originalText,
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                  fontFamily: 'En'),
                               //maxLines: 2,
                             ),
                           ),
@@ -120,7 +120,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                 child: Text(
                                   feedback.fixText,
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.white),
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontFamily: 'En'),
                                   //maxLines: 2,
                                 ),
                               ),

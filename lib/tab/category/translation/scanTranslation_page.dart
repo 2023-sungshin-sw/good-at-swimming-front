@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/translation/camera_screen.dart';
 //import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
@@ -175,7 +176,7 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
               message,
               style: const TextStyle(
                 color: Colors.white,
-                fontFamily: 'Inter',
+                fontFamily: 'En',
                 fontSize: 10,
                 fontWeight: FontWeight.w100,
               ),
@@ -212,7 +213,7 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       body: Center(
@@ -226,13 +227,19 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        content: Text('텍스트를 누르면 단어가 저장됩니다'),
+                        content: const Text(
+                          '텍스트를 누르면 단어가 저장됩니다',
+                          style: TextStyle(fontFamily: 'Kr'),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('닫기'),
+                            child: const Text(
+                              '닫기',
+                              style: TextStyle(fontFamily: 'Kr'),
+                            ),
                           ),
                         ],
                       );
@@ -243,7 +250,7 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                   'TIP',
                   style: TextStyle(
                       fontSize: 20,
-                      fontFamily: 'Player',
+                      fontFamily: 'En',
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
@@ -268,7 +275,9 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                     children: [
                       const Text('English',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontFamily: 'En',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left),
                       const SizedBox(height: 10),
                       Wrap(
@@ -289,7 +298,8 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                                   },
                                   child: Text(
                                     word,
-                                    style: const TextStyle(fontSize: 16),
+                                    style: const TextStyle(
+                                        fontSize: 16, fontFamily: 'En'),
                                   ),
                                 ),
                               ],
@@ -315,12 +325,14 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                     children: [
                       const Text('Korean',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontFamily: 'Kr',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left),
                       const SizedBox(height: 10),
                       Text(
                         translated_text.join(' '),
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16, fontFamily: 'Kr'),
                       ),
                     ],
                   ),
@@ -338,10 +350,10 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                   icon: const Icon(Icons.camera_alt),
                   color: Colors.white,
                   onPressed: () {
-                    /*Navigator.push(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ScanPage()),
-                    );*/
+                      MaterialPageRoute(builder: (context) => CameraScreen()),
+                    );
                   },
                 ),
               ),

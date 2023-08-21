@@ -66,7 +66,7 @@ class _CameraScreenState extends State<CameraScreen> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       body: SafeArea(
@@ -88,7 +88,10 @@ class _CameraScreenState extends State<CameraScreen> {
                 onPressed: _cameraController != null
                     ? () => _onTakePicture(context)
                     : null,
-                child: const Text('Take a photo'),
+                child: const Text(
+                  'Take a photo',
+                  style: TextStyle(fontFamily: 'En'),
+                ),
               ),
             ),
           ],

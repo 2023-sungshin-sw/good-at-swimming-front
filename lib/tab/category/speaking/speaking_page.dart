@@ -53,7 +53,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
         ),
         title: const Text(
           'SPEAKING TOPIC',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25, fontWeight: FontWeight.bold, fontFamily: 'En'),
         ),
         centerTitle: true,
       ),
@@ -75,7 +76,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: const Center(
                   child: Text(
                     '영화관',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),
@@ -91,7 +93,6 @@ class _SpeakingPageState extends State<SpeakingPage> {
                               ChatPage(Topic: topic), // topic 값을 전달
                         ),
                       );
-
                       _isCheckedFirst = !_isCheckedFirst;
                     });
                   },
@@ -128,7 +129,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: Center(
                   child: const Text(
                     '음식점',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),
@@ -173,7 +175,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: Center(
                   child: const Text(
                     '호텔',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),
@@ -218,7 +221,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: Center(
                   child: const Text(
                     '비행기',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),
@@ -263,7 +267,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: Center(
                   child: const Text(
                     '페스티벌',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),
@@ -308,7 +313,8 @@ class _SpeakingPageState extends State<SpeakingPage> {
                 child: Center(
                   child: const Text(
                     '옷가게',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 20, fontFamily: 'Kr'),
                   ),
                 ),
               ),

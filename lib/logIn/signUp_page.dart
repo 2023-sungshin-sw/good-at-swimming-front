@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
               message,
               style: const TextStyle(
                 color: Colors.white,
-                fontFamily: 'Inter',
+                fontFamily: 'Kr',
                 fontSize: 12,
                 fontWeight: FontWeight.w100,
               ),
@@ -151,7 +151,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: TextStyle(
                                   color: Color(0xFF5C65BB),
                                   fontSize: 27.9,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'En'),
                             ),
                           ),
                         ),
@@ -159,7 +160,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Text(
                           'English Name',
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'En'),
                         ),
                         const SizedBox(height: 10.0),
                         Container(
@@ -182,7 +185,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             const Text(
                               'Phone',
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'En'),
                             ),
                             const SizedBox(height: 10.0),
                             Row(
@@ -239,6 +244,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             : const Text(
                                                 '중복확인',
                                                 style: TextStyle(
+                                                  fontFamily: 'Kr',
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -255,7 +261,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Text(
                           'Password',
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'En'),
                         ),
                         const SizedBox(height: 10.0),
                         Container(
@@ -275,7 +283,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Text(
                           'Confirm Password',
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'En'),
                         ),
                         const SizedBox(height: 10.0),
                         Container(
@@ -328,7 +338,9 @@ class _SignUpPageState extends State<SignUpPage> {
                               child: const Text(
                                 "SIGN UP",
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'En'),
                               ),
                             ),
                           ),

@@ -99,7 +99,7 @@ class _WordPageState extends State<WordPage> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       body: Column(
@@ -194,6 +194,7 @@ class _WordPageState extends State<WordPage> {
                         child: Text(
                           (i + 1).toString(),
                           style: TextStyle(
+                            fontFamily: 'En',
                             color: i == currentPage
                                 ? const Color(0xFF5C65BB)
                                 : const Color(0xFF5C65BB),

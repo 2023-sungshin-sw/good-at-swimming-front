@@ -61,7 +61,7 @@ class _PhotoPreviewState extends State<PhotoPreview> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       body: SingleChildScrollView(
@@ -83,7 +83,10 @@ class _PhotoPreviewState extends State<PhotoPreview> {
                 onPressed: () async {
                   await _performOCR();
                 },
-                child: Text('Select'),
+                child: Text(
+                  'Select',
+                  style: TextStyle(fontFamily: 'En'),
+                ),
               ),
               SizedBox(height: 20),
             ],

@@ -180,7 +180,8 @@ class _ChatPageState extends State<ChatPage> {
         ),
         title: const Text(
           'TOPIC',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 25, fontWeight: FontWeight.bold, fontFamily: 'En'),
         ),
       ),
       body: Column(
@@ -252,9 +253,7 @@ class _ChatPageState extends State<ChatPage> {
         ),
         child: Text(
           message,
-          style: const TextStyle(
-            color: Colors.white,
-          ),
+          style: const TextStyle(color: Colors.white, fontFamily: 'En'),
         ),
       ),
     );

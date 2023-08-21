@@ -111,7 +111,7 @@ class _TranslatePageState extends State<TranslatePage> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       body: Center(
@@ -137,7 +137,7 @@ class _TranslatePageState extends State<TranslatePage> {
                 child: Column(
                   children: [
                     const Text('English',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, fontFamily: 'En'),
                         textAlign: TextAlign.left),
                     TextField(
                       decoration: const InputDecoration(
@@ -157,7 +157,7 @@ class _TranslatePageState extends State<TranslatePage> {
                               const Color.fromARGB(255, 242, 84, 5)),
                       child: const Text(
                         'Translate',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontFamily: 'En'),
                       ),
                     ),
                   ],
@@ -182,7 +182,7 @@ class _TranslatePageState extends State<TranslatePage> {
                 child: Column(
                   children: [
                     const Text('Korean',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16, fontFamily: 'En'),
                         textAlign: TextAlign.left),
                     TextField(
                       decoration: const InputDecoration(
@@ -202,7 +202,7 @@ class _TranslatePageState extends State<TranslatePage> {
                               const Color.fromARGB(255, 242, 84, 5)),
                       child: const Text(
                         'Translate',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontFamily: 'En'),
                       ),
                     ),
                   ],
@@ -220,7 +220,7 @@ class _TranslatePageState extends State<TranslatePage> {
               child: Column(
                 children: [
                   Text(isEnglishToKorean ? 'Korean' : 'English',
-                      style: const TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16, fontFamily: 'En'),
                       textAlign: TextAlign.left),
                   Text(
                     translated_text,
@@ -248,7 +248,10 @@ class _TranslatePageState extends State<TranslatePage> {
                     children: [
                       const Text(
                         'English',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'En'),
                       ),
                       const SizedBox(width: 10),
                       Container(
@@ -268,7 +271,10 @@ class _TranslatePageState extends State<TranslatePage> {
                       const SizedBox(width: 10),
                       const Text(
                         'Korean',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'En'),
                       ),
                     ],
                   )
@@ -278,7 +284,10 @@ class _TranslatePageState extends State<TranslatePage> {
                     children: [
                       const Text(
                         'Korean',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'En'),
                       ),
                       const SizedBox(width: 10),
                       Container(
@@ -298,7 +307,10 @@ class _TranslatePageState extends State<TranslatePage> {
                       const SizedBox(width: 10),
                       const Text(
                         'English',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: 'En'),
                       ),
                     ],
                   ),

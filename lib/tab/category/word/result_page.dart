@@ -101,7 +101,7 @@ class _ResultPageState extends State<ResultPage> {
               fontSize: 25,
               fontWeight: FontWeight.bold,
               letterSpacing: 2.5,
-              fontFamily: 'Player'),
+              fontFamily: 'En'),
         ),
       ),
       backgroundColor: const Color(0xFF030C1A),
@@ -124,7 +124,7 @@ class _ResultPageState extends State<ResultPage> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w400,
-                    fontFamily: 'Black Han Sans',
+                    fontFamily: 'En',
                     color: Colors.white,
                   ),
                 ),
@@ -154,7 +154,7 @@ class _ResultPageState extends State<ResultPage> {
                       style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w700,
-                        fontFamily: 'IBM Plex Sans KR',
+                        fontFamily: 'Kr',
                         color: Colors.black,
                       ),
                     ),
@@ -188,6 +188,7 @@ class _ResultPageState extends State<ResultPage> {
                                 Text(
                                   wrongWords[index].word, // 틀린 영단어
                                   style: const TextStyle(
+                                    fontFamily: 'En',
                                     fontSize: 16,
                                     color: Colors.white,
                                   ),
@@ -195,6 +196,7 @@ class _ResultPageState extends State<ResultPage> {
                                 Text(
                                   wrongWords[index].meaning,
                                   style: const TextStyle(
+                                    fontFamily: 'Kr',
                                     fontSize: 12,
                                     color: Colors.white,
                                   ),

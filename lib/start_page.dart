@@ -43,12 +43,13 @@ class _StartPageState extends State<StartPage> {
               width: 160,
               height: 160,
             ),
-            SizedBox(height: 20),
-            Text("        Hello Su-Jeong ! \nLet's go to study English",
+            const SizedBox(height: 20),
+            const Text("        Hello Su-Jeong ! \nLet's go to study English",
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 24)),
+                    fontSize: 24,
+                    fontFamily: 'En')),
             SizedBox(height: 56),
             Container(
               width: 290.19,
@@ -66,7 +67,9 @@ class _StartPageState extends State<StartPage> {
                   },
                   child: Text(
                     'Log in',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -88,7 +91,7 @@ class _StartPageState extends State<StartPage> {
                   },
                   child: Text(
                     'Sign up',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white, fontFamily: 'En'),
                   ),
                 ),
               ),

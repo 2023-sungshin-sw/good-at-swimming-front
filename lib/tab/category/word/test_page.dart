@@ -153,7 +153,7 @@ class _TestPageState extends State<TestPage> {
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2.5,
-                fontFamily: 'Player')),
+                fontFamily: 'En')),
         centerTitle: true,
       ),
       backgroundColor: const Color(0xFF030C1A),
@@ -176,7 +176,9 @@ class _TestPageState extends State<TestPage> {
                         child: Text(
                           word.word,
                           style: const TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                              fontFamily: 'En',
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -189,7 +191,9 @@ class _TestPageState extends State<TestPage> {
                         child: Text(
                           word.meaning,
                           style: const TextStyle(
-                              fontSize: 40, fontWeight: FontWeight.bold),
+                              fontFamily: 'Kr',
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),

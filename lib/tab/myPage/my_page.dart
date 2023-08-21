@@ -53,6 +53,7 @@ class _MyPageState extends State<MyPage> {
                 child: Text(
                   'User Name',
                   style: TextStyle(
+                    fontFamily: 'En',
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -98,6 +99,7 @@ class _MyPageState extends State<MyPage> {
                     child: Text(
                       'SETTING',
                       style: TextStyle(
+                        fontFamily: 'En',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),

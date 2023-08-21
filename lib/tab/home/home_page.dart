@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         '오늘의 영어 표현',
                         style: TextStyle(
+                          fontFamily: 'Kr',
                           color: Colors.white,
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -48,6 +49,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Tomorrow hopes we have learned something from yesterday.', // 영어 표현 한문장
                         style: TextStyle(
+                          fontFamily: 'En',
                           color: Colors.white,
                           fontSize: 20,
                         ),
@@ -57,6 +59,7 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         '내일은 우리가 어제로부터 무엇인가 배웠기를 바란다.', // 한국말 해석
                         style: TextStyle(
+                          fontFamily: 'Kr',
                           color: Colors.white,
                           fontSize: 20,
                         ),

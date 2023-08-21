@@ -76,6 +76,7 @@ class _TabPageState extends State<TabPage> {
           Text(
             label,
             style: TextStyle(
+              fontFamily: 'En',
               color: isSelected ? Color(0xFF5C65BB) : Colors.grey,
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),

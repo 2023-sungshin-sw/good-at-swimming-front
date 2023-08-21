@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
               message,
               style: const TextStyle(
                 color: Colors.white,
-                fontFamily: 'Inter',
+                fontFamily: 'Kr',
                 fontSize: 12,
                 fontWeight: FontWeight.w100,
               ),
@@ -118,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(
                                 color: Color(0xFF5C65BB),
                                 fontSize: 25,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'En'),
                           ),
                         ),
                       ),
@@ -130,7 +131,9 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         'Phone',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'En'),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -152,7 +155,9 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         'Password',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'En'),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -189,7 +194,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: const Text(
                               "Log in",
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'En'),
                             ),
                           ),
                         ),

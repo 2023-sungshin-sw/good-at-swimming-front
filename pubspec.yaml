@@ -65,6 +65,12 @@ flutter:
     - family: Player
       fonts:
         - asset: fonts/I AM A PLAYER.otf
+    - family: En
+      fonts:
+        - asset: fonts/LINESeedKR-Rg.otf
+    - family: Kr
+      fonts:
+        - asset: fonts/LINESeedSans_A_bd.otf
 
   assets:
     - assets/Frame 10.png
