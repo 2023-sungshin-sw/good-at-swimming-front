@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_swimming/tab/category/category_page.dart';
+import 'logIn/logIn_page.dart';
+import 'logIn/signUp_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +38,12 @@ class _StartPageState extends State<StartPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/수정구.png', // 이미지 파일
+              width: 160,
+              height: 160,
+            ),
+            SizedBox(height: 20),
             Text("        Hello Su-Jeong ! \nLet's go to study English",
                 style: TextStyle(
                     color: Colors.white,
@@ -48,10 +56,18 @@ class _StartPageState extends State<StartPage> {
               decoration: BoxDecoration(
                   color: Color(0xFF5C65BB),
                   borderRadius: BorderRadius.circular(10)),
-              child: const Center(
-                child: Text(
-                  'Log in',
-                  style: TextStyle(color: Colors.white),
+              child: Center(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Text(
+                    'Log in',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -62,10 +78,18 @@ class _StartPageState extends State<StartPage> {
               decoration: BoxDecoration(
                   color: Color(0xFF5C65BB),
                   borderRadius: BorderRadius.circular(10)),
-              child: const Center(
-                child: Text(
-                  'Sign up',
-                  style: TextStyle(color: Colors.white),
+              child: Center(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                    );
+                  },
+                  child: Text(
+                    'Sign up',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),

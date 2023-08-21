@@ -69,6 +69,7 @@ flutter:
   assets:
     - assets/Frame 10.png
     - assets/수룡.png
+    - assets/수정구.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

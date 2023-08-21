@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:good_swimming/start_page.dart';
 import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:http/http.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -88,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_outlined),
           onPressed: () {
-            // 아이콘 버튼을 클릭했을 때 수행할 동작 코드 추가
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const StartPage()));
           },
         ),
         backgroundColor: Colors.black,
