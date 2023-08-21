@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:good_swimming/tab/category/speaking/chat_page.dart';
-import 'package:good_swimming/tab/home/home_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -13,16 +11,9 @@ class FeedbackItem {
   final String fixText;
 
   FeedbackItem({required this.originalText, required this.fixText});
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FeedbackPage(),
-    );
+  String toString() {
+    return 'FeedbackItem{origianl_sentence: $originalText, fix_sentence: $fixText}';
   }
 }
 
@@ -34,8 +25,7 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
-  List<FeedbackItem> _feedbackList = [];
-  String feedback_id = '22';
+  final List<FeedbackItem> _feedbackList = [];
 
   @override
   void initState() {
@@ -43,26 +33,29 @@ class _FeedbackPageState extends State<FeedbackPage> {
     fetchData();
   }
 
-  String API = 'http://www.good-at-swimming-back.store/chat/feedback/48';
-
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse(API));
+    try {
+      final response = await http.get(Uri.parse(
+          'http://www.good-at-swimming-back.store/chat/feedback/173'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> feedbackData =
-          jsonDecode(utf8.decode(response.bodyBytes));
-
-      print(feedbackData);
-      setState(() {
-        _feedbackList = feedbackData
-            .map((feedback) => FeedbackItem(
-                  originalText: feedback['original_sentence'],
-                  fixText: feedback['fix_sentence'],
+      if (response.statusCode == 200) {
+        final List<dynamic> feedbackData = jsonDecode(response.body);
+        List<FeedbackItem> feedbackItems = feedbackData
+            .map((item) => FeedbackItem(
+                  originalText: item['original_sentence'],
+                  fixText: item['fix_sentence'],
                 ))
             .toList();
-      });
-    } else {
-      throw Exception('Failed to load feedback data');
+
+        setState(() {
+          _feedbackList.clear();
+          _feedbackList.addAll(feedbackItems);
+        });
+      } else {
+        throw Exception('피드백 데이터 로드 실패');
+      }
+    } catch (error) {
+      print('Error fetching data: $error');
     }
   }
 
@@ -75,10 +68,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
+              Navigator.pop(context); // Instead of pushing HomePage
             },
           ),
           title: const Text(
@@ -107,9 +97,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            feedback.originalText,
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          Flexible(
+                            child: Text(
+                              feedback.originalText,
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                              //maxLines: 2,
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -120,10 +114,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                 size: 20,
                               ),
                               const SizedBox(width: 5),
-                              Text(
-                                feedback.fixText,
-                                style: const TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                              Flexible(
+                                child: Text(
+                                  feedback.fixText,
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white),
+                                  //maxLines: 2,
+                                ),
                               ),
                             ],
                           ),
@@ -131,13 +128,23 @@ class _FeedbackPageState extends State<FeedbackPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                 ],
               );
             }).toList(),
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter App',
+      home: FeedbackPage(),
     );
   }
 }
