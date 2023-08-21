@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:good_swimming/start_page.dart';
 import 'package:good_swimming/tab/home/home_page.dart';
+import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
@@ -69,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
       if (state == 'success') {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => TabPage(selectedTab: 0)),
         );
       } else {
         _showToast(context, "아이디 혹은 비밀번호가 틀렸습니다");
