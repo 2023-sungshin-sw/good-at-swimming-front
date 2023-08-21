@@ -124,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.black,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -137,198 +137,202 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Let's GO!",
-                            style: TextStyle(
-                                color: Color(0xFF5C65BB),
-                                fontSize: 27.9,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15.0),
-                      const Text(
-                        'English Name',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: TextFormField(
-                          controller: nameController,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your English name',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Phone',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 20.0),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: TextFormField(
-                                    controller: phoneController,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Enter your phone #',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 85,
-                                height: 50,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (phoneController.text.isEmpty) {
-                                      _showToast(context, "전화번호를 입력해주세요");
-                                    } else if (!isUsernameAvailable) {
-                                      setState(() {
-                                        isUsernameAvailable =
-                                            !isUsernameAvailable;
-                                      });
-
-                                      if (isUsernameAvailable) {
-                                        _showToast(context, "사용 가능한 전화번호입니다.");
-                                      } else {
-                                        _showToast(
-                                            context, "이미 사용 중인 전화번호입니다.");
-                                      }
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF5C65BB),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      isUsernameAvailable
-                                          ? const Icon(Icons.check,
-                                              color: Colors
-                                                  .white) // 중복확인이 확인 아이콘으로 변경
-                                          : const Text(
-                                              '중복확인',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      const Text(
-                        'Password',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: TextFormField(
-                          controller: passwordController,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your Password',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30.0),
-                      const Text(
-                        'Confirm Password',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: TextFormField(
-                          controller: passwordC_Controller,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter your Password again',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF5C65BB),
-                                fixedSize: Size(200, 50)),
-                            onPressed: () async {
-                              if (nameController.text == null ||
-                                  nameController.text.isEmpty) {
-                                _showToast(context, "이름을 입력해주세요");
-                              } else if (phoneController.text == null ||
-                                  phoneController.text.isEmpty) {
-                                _showToast(context, "전화번호를 입력해주세요");
-                              } else if (!isUsernameAvailable) {
-                                _showToast(context, "전화번호 중복확인을 해주세요");
-                              } else if (passwordC_Controller.text == null ||
-                                  passwordC_Controller.text.isEmpty) {
-                                _showToast(context, "비밀번호를 확인해주세요");
-                              } else if (passwordController.text !=
-                                  passwordC_Controller.text) {
-                                setState(() {
-                                  passwordsMatch = false;
-                                });
-                                _showToast(context, "비밀번호가 일치하지 않습니다");
-                              } else {
-                                passwordsMatch = true;
-                                await checkPhoneNumberAvailability();
-                              }
-                              if (isUsernameAvailable) {
-                                sendDataToBackend();
-                              }
-                            },
-                            child: const Text(
-                              "SIGN UP",
+                  child: Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Let's GO!",
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  color: Color(0xFF5C65BB),
+                                  fontSize: 27.9,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 5.0),
+                        const Text(
+                          'English Name',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: TextFormField(
+                            controller: nameController,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your English name',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Phone',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10.0),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: TextFormField(
+                                      controller: phoneController,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Enter your phone #',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 85,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (phoneController.text.isEmpty) {
+                                        _showToast(context, "전화번호를 입력해주세요");
+                                      } else if (!isUsernameAvailable) {
+                                        setState(() {
+                                          isUsernameAvailable =
+                                              !isUsernameAvailable;
+                                        });
+
+                                        if (isUsernameAvailable) {
+                                          _showToast(
+                                              context, "사용 가능한 전화번호입니다.");
+                                        } else {
+                                          _showToast(
+                                              context, "이미 사용 중인 전화번호입니다.");
+                                        }
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF5C65BB),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        isUsernameAvailable
+                                            ? const Icon(Icons.check,
+                                                color: Colors
+                                                    .white) // 중복확인이 확인 아이콘으로 변경
+                                            : const Text(
+                                                '중복확인',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                        const Text(
+                          'Password',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: TextFormField(
+                            controller: passwordController,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your Password',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        const Text(
+                          'Confirm Password',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: TextFormField(
+                            controller: passwordC_Controller,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your Password again',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF5C65BB),
+                                  fixedSize: Size(200, 35)),
+                              onPressed: () async {
+                                if (nameController.text == null ||
+                                    nameController.text.isEmpty) {
+                                  _showToast(context, "이름을 입력해주세요");
+                                } else if (phoneController.text == null ||
+                                    phoneController.text.isEmpty) {
+                                  _showToast(context, "전화번호를 입력해주세요");
+                                } else if (!isUsernameAvailable) {
+                                  _showToast(context, "전화번호 중복확인을 해주세요");
+                                } else if (passwordC_Controller.text == null ||
+                                    passwordC_Controller.text.isEmpty) {
+                                  _showToast(context, "비밀번호를 확인해주세요");
+                                } else if (passwordController.text !=
+                                    passwordC_Controller.text) {
+                                  setState(() {
+                                    passwordsMatch = false;
+                                  });
+                                  _showToast(context, "비밀번호가 일치하지 않습니다");
+                                } else {
+                                  passwordsMatch = true;
+                                  await checkPhoneNumberAvailability();
+                                }
+                                if (isUsernameAvailable) {
+                                  sendDataToBackend();
+                                }
+                              },
+                              child: const Text(
+                                "SIGN UP",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
