@@ -102,7 +102,8 @@ class _ChatPageState extends State<ChatPage> {
         // No more questions, chat is done
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const FeedbackPage()),
+          MaterialPageRoute(
+              builder: (context) => FeedbackPage(topicId: _roomId)),
         );
       }
     });

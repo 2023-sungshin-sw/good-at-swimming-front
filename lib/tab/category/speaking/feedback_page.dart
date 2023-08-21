@@ -19,7 +19,8 @@ class FeedbackItem {
 }
 
 class FeedbackPage extends StatefulWidget {
-  const FeedbackPage({Key? key}) : super(key: key);
+  FeedbackPage({required this.topicId});
+  final int topicId;
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState();
@@ -37,7 +38,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://www.good-at-swimming-back.store/chat/feedback/173'));
+          'http://www.good-at-swimming-back.store/chat/feedback/${widget.topicId}'));
 
       if (response.statusCode == 200) {
         final List<dynamic> feedbackData = jsonDecode(response.body);
@@ -139,16 +140,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter App',
-      home: FeedbackPage(),
     );
   }
 }

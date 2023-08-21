@@ -89,8 +89,6 @@ class _TestPageState extends State<TestPage> {
           ),
         );
       }
-    } else {
-      print("Failed to submit word as incorrect.");
     }
   }
 
@@ -110,7 +108,7 @@ class _TestPageState extends State<TestPage> {
     print("Response data: ${response.body}");
 
     if (response.statusCode == 200) {
-      print("Word submitted as incorrect.");
+      print("Word submitted as correct.");
 
       setState(() {
         current++; // 현재 페이지 인덱스를 증가시킴
@@ -129,8 +127,6 @@ class _TestPageState extends State<TestPage> {
           ),
         );
       }
-    } else {
-      print("Failed to submit word as incorrect.");
     }
   }
 
