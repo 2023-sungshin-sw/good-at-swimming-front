@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:good_swimming/tab/category/translation/camera_screen.dart';
 //import 'package:good_swimming/tab/category/translation/scan_page.dart';
 import 'package:good_swimming/tab/tab_page.dart';
 import 'package:http/http.dart' as http;
@@ -273,10 +274,10 @@ class _ScanTranslatePageState extends State<ScanTranslatePage> {
                 icon: const Icon(Icons.camera_alt),
                 color: Colors.white,
                 onPressed: () {
-                  /*Navigator.push(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ScanPage()),
-                  );*/
+                    MaterialPageRoute(builder: (context) => CameraScreen()),
+                  );
                 },
               ),
             ),
