@@ -147,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             "Let's GO!",
                             style: TextStyle(
                                 color: Color(0xFF5C65BB),
-                                fontSize: 25,
+                                fontSize: 27.9,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -156,7 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const Text(
                         'English Name',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -179,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           const Text(
                             'Phone',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 20.0),
                           Row(
@@ -250,7 +250,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const Text(
                         'Password',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -270,7 +270,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const Text(
                         'Confirm Password',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20.0),
                       Container(
