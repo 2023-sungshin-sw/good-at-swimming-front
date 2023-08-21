@@ -24,11 +24,29 @@ class _LoginPageState extends State<LoginPage> {
   void _showToast(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: TextStyle(color: Colors.white),
+        content: Container(
+          width: 311,
+          height: 17,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 51, 50, 50),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Center(
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Inter',
+                fontSize: 12,
+                fontWeight: FontWeight.w100,
+              ),
+            ),
+          ),
         ),
-        backgroundColor: Colors.black,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
       ),
     );
   }

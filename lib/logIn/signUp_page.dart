@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final String phoneNumber = phoneController.text;
 
     final Uri uri =
-        Uri.parse('http://www.good-at-swimming-back.store/user/join/');
+        Uri.parse('http://www.good-at-swimming-back.store/user/check-phone/');
     final response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
@@ -102,6 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
       } else {
         // 요청이 실패한 경우
         print('Failed to send data. Status code: ${response.statusCode}');
+        _showToast(context, "회원가입에 실패하였습니다.");
       }
     } catch (e) {
       print('Error sending data: $e');
@@ -207,6 +209,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                       isUsernameAvailable =
                                           !isUsernameAvailable;
                                     });
+                                    if (isUsernameAvailable) {
+                                      _showToast(context, "사용 가능한 전화번호입니다.");
+                                    } else {
+                                      _showToast(context, "이미 사용 중인 전화번호입니다.");
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF5C65BB),
@@ -282,9 +289,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
                             onPressed: () async {
-                              if (phoneController.text == null ||
+                              if (nameController.text == null ||
+                                  nameController.text.isEmpty) {
+                                _showToast(context, "이름을 입력해주세요");
+                              } else if (phoneController.text == null ||
                                   phoneController.text.isEmpty) {
                                 _showToast(context, "전화번호를 입력해주세요");
+                              } else if (!isUsernameAvailable) {
+                                _showToast(context, "전화번호 중복확인을 해주세요");
+                              } else if (passwordC_Controller.text == null ||
+                                  passwordC_Controller.text.isEmpty) {
+                                _showToast(context, "비밀번호를 확인해주세요");
                               } else if (passwordController.text !=
                                   passwordC_Controller.text) {
                                 setState(() {
