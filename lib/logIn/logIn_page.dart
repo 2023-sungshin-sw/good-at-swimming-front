@@ -179,13 +179,13 @@ class _LoginPageState extends State<LoginPage> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Color(0xFF5C65BB),
                                 fixedSize: Size(200, 50)),
-                            onPressed: isAllFieldsFilled()
-                                ? () {
-                                    _login();
-                                  }
-                                : () {
-                                    _showToast(context, "모든 칸을 작성해주세요");
-                                  },
+                            onPressed: () {
+                              if (isAllFieldsFilled()) {
+                                _login();
+                              } else {
+                                _showToast(context, "모든 칸을 작성해주세요");
+                              }
+                            },
                             child: const Text(
                               "Log in",
                               style: TextStyle(
