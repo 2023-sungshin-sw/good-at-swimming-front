@@ -204,17 +204,21 @@ class _SignUpPageState extends State<SignUpPage> {
                                 width: 85,
                                 height: 50,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isUsernameAvailable =
-                                          !isUsernameAvailable;
-                                    });
-                                    if (isUsernameAvailable) {
-                                      _showToast(context, "사용 가능한 전화번호입니다.");
-                                    } else {
-                                      _showToast(context, "이미 사용 중인 전화번호입니다.");
-                                    }
-                                  },
+                                  onPressed: isUsernameAvailable
+                                      ? null
+                                      : () {
+                                          setState(() {
+                                            isUsernameAvailable =
+                                                !isUsernameAvailable;
+                                          });
+                                          if (isUsernameAvailable) {
+                                            _showToast(
+                                                context, "사용 가능한 전화번호입니다.");
+                                          } else {
+                                            _showToast(
+                                                context, "이미 사용 중인 전화번호입니다.");
+                                          }
+                                        },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF5C65BB),
                                   ),
